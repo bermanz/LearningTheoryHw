@@ -1,0 +1,45 @@
+\begin{algorithm}
+    \caption{An algorithm with caption}\label{alg:cap}
+    \begin{algorithmic}
+        \Require $S\{(x_1, y_1), (x_2, y_2), ..., (x_m, y_m)\}$
+        \State $\hat{l} \gets 0$
+        \State $\hat{u} \gets 1$
+        \For{$i=1:m$}
+            \If{$y_i=+$}
+                \If{$x_i > \hat{l}$}
+                    \State $\hat{l} \gets x_i$
+                \EndIf
+                \If{$x_i < \hat{u}$}
+                    \State $\hat{u} \gets x_i$
+                \EndIf
+            \EndIf
+        \EndFor \\
+    \Return $\hat{l}, \hat{u}$
+    \end{algorithmic}
+\end{algorithm}
+
+Let $I = [l, u]$, the true interval from which the '+' instances come, and $\hat{I}_m = [\hat{l}, \hat{u}]$, 
+the interval estimated by the algorithm given the sample $S$ of size $m$.
+We are looking for the sample complexity $m(\epsilon, \delta)$ such that $P(D(\Delta(I, \hat{I})) < \epsilon) > 1-\delta$ 
+or equivalently $P(D(\Delta(I, \hat{I})) > \epsilon) < \delta$.
+Assuming the length of $I$ is at least $\epsilon$, let's define the 2 sub-intervals $\Delta l = \hat{l} - l, \Delta u = u - \hat{u}$, 
+such that $D(\Delta l) = D(\Delta u) < \frac{\epsilon}{2}$ (for which inherently $D(\Delta(I, \hat{I})) < \epsilon$).
+The probability for non of the instances $(x_i, +)~D$ from the sample of m instances to fall within the interval $\Delta l$ 
+(which is equivalent to $D(\Delta l) > \frac{\epsilon}{2}$)is therefore:
+\begin{equation*}
+    P(\underset{i=1:m}{\cup} x_i \notin \Delta l) = \prod_{i=1}^{m}P(x_i \notin \Delta l) 
+    = \prod_{i=1}^{m} 1-\frac{\epsilon}{2}= (1-\frac{\epsilon}{2})^m \leq e^{-\frac{\epsilon}{2}m}
+\end{equation*}
+
+Where the 1st transition is since the instances are i.i.d. The same applies for $D(\Delta u)$ from symmetry.
+Using the union bound:
+\begin{equation*}
+    P(D(\Delta(I, \hat{I})) > \epsilon) = P\left[D(\Delta l) \cup D(\Delta u) > \frac{\epsilon}{2}\right] 
+    \leq P(D(\Delta l) > \frac{\epsilon}{2}) + P(D(\Delta l) > \frac{\epsilon}{2}) \leq 2e^{-\frac{\epsilon}{2}m} \overset{!}{<} \delta
+\end{equation*}
+By taking the log of both sides and simplifying, we get the desired sample complexity:
+\begin{equation*}
+    m(\epsilon, \delta) > \frac{2}{\epsilon} log(\frac{2}{\delta})
+\end{equation*}
+
+
