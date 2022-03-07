@@ -1,0 +1,25 @@
+W.l.o.g and for simplicity of formulation, let's assume $h_1 = f$ and $h_2: D(h_2(x)\neq f(x)) > \epsilon, \; x \sim D$.
+Since the examples are labeled, seeing a single example that's wrongly classified by $h_2$ is sufficient for determination.
+The most efficient procedure is therefore to observe examples drawn from D, until an example that satisfies $h(x_i) \neq f(x_i)$, 
+after which we can stop the process.
+
+Put in formulas, our sample size should be such that satisfies:
+\begin{equation*}
+    P\left(\exists x_m: h_2(x_i) \neq f(x_i))\right) > 1-\delta, \; i \in [1, m]
+\end{equation*}
+Put the other way around, the event that \emph{all} m examples of a sample S are classified correctly should occur with probability smaller than $\delta$:
+\begin{equation*}
+    P\left(\forall x_i: h_2(x_i) = f(x_i))\right) < \delta, \; i\in [1, m]
+\end{equation*} 
+
+As the examples are i.i.d:
+\begin{equation*}
+    P\left(\forall x_i: h_2(x_i) = f(x_i))\right) = P\left(\cap_{i=1}^m h_2(x_i) = f(x_i))\right) = \prod_{i=1}^m P\left(h_2(x_i) = f(x_i))\right)
+    \leq \prod_{i=1}^m 1-\epsilon = (1-\epsilon)^m \leq e^{-\epsilon m}
+\end{equation*}
+
+Plugging it in:
+\begin{equation*}
+    P\left(\forall x_i: h_2(x_i) = f(x_i))\right) \leq e^{-\epsilon m} \overset{!}{<} \delta \Rightarrow 
+    m(\epsilon, \delta) > \frac{1}{\epsilon} log(\frac{1}{\delta})
+\end{equation*}

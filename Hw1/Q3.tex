@@ -1,0 +1,29 @@
+For all subsections, whenever the 3 bits aren't all the same, the reduction OR will yield 1 and the reduction AND will yield 0. 
+Only when all bits are the same, both functions will yield the same result (x when all bits are x).
+Thus, the error probability is that of drawing a sample where not all bits are the same, or equivalently, one minus the probability all bits are the same:
+\begin{equation*}
+    err_D = err_{f_1, D}(f_2) = err_{f_2, D}(f_1) = 1 - D(x_1=x_2=x_3)
+\end{equation*}
+
+\subsection*{1}
+There's an equal chance for drawing any permutation of the 3 bits, hence:
+\begin{equation*}
+    err_D = 1 - 2*\frac{1}{8} = 1 - \frac{1}{4} = \frac{3}{4}
+\end{equation*}
+
+\subsection*{2}
+Now, the probability of the event $D(x_1=x_2=x_3)$ is 1, so:
+\begin{equation*}
+    err_D = 0
+\end{equation*}
+
+\subsection*{3}
+We need to design D such that $D(x_1=x_2=x_3) = \frac{9}{10}$. One possible choice is the following:
+\begin{equation*}
+    D = 
+    \begin{cases}
+        \frac{9}{10}, & x = '111' \\
+        0, & x = '000' \\
+        \frac{1}{60}, & x \neq \{'111', '000'\}
+    \end{cases}
+\end{equation*}

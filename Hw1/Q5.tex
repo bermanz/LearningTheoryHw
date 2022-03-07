@@ -1,0 +1,76 @@
+\subsection*{1}
+\begin{proof}    
+    First, we note that since $e>1$ and $X\geq t$, then $X\geq t \Rightarrow e^{\lambda X} \geq e^{\lambda t}$
+    and so $P(X\geq t) = P(e^{\lambda X} \geq e^{\lambda t})$.
+    
+    Let $\tilde{X} \triangleq e^{\lambda X}$, then following Markov's inequality:
+    
+    \begin{equation*}
+        P(\tilde{X} \geq e^{\lambda t}) \leq \frac{\mathbb{E}\tilde{X}}{e^{\lambda t}} =e^{-\lambda t} \mathbb{E}\tilde{X} 
+    \end{equation*}
+    
+    Since $x_i, \; i\in [1, k]$ are i.i.d:
+    \begin{equation*}
+        \mathbb{E}\tilde{X} = \mathbb{E} e^{\lambda X} = \mathbb{E} e^{\mysum{1}{k} \lambda x_i} = 
+        \mathbb{E} \prod_{i=1}^k e^{\lambda x_i} = \prod_{i=1}^k \mathbb{E} e^{\lambda x_i}
+    \end{equation*}
+    Where the last transition is since $x_i$ are i.i.d. Let's calculate explicitly:
+    
+    \begin{equation*}
+        \mathbb{E} x_i = \sum_{j=\pm 1} P(x_i=j) e^{\lambda j} = \frac{e^\lambda}{2} + \frac{e^{-\lambda}}{2}
+    \end{equation*}
+    
+    Plugging it all in:
+    \begin{equation*}
+        P(X\geq t) \leq e^{-\lambda t} \mathbb{E}\tilde{X} = 
+        e^{-\lambda t}\cdot \prod_{i=1}^k \left( \frac{e^\lambda}{2} + \frac{e^{-\lambda}}{2} \right)
+        = e^{-\lambda t}\cdot \left( \frac{e^\lambda}{2} + \frac{e^{-\lambda}}{2} \right)^k
+    \end{equation*}
+\end{proof}
+
+\subsection*{2}
+\begin{proof}
+    In the following, we utilize the fact that an exponential taylor expansion converges to the original exponent $\forall \lambda$, and in particular $\forall \lambda>0$.
+    Let's expand the LHS using a taylor expansion:
+    \begin{equation*}
+        \frac{1}{2} (e^\lambda + e^{-\lambda}) = \frac{1}{2} \mysum{0}{\infty} \frac{\lambda^i}{i!} + \frac{-\lambda^i}{i!} 
+        = \frac{1}{2} \mysum{0}{\infty} 2\frac{\lambda^{2i}}{(2i)!} = \mysum{0}{\infty} \frac{\lambda^{2i}}{(2i)!}
+    \end{equation*}
+    Now let's do the same for the R.H.S:
+    \begin{equation*}
+        e^{\frac{\lambda^2}{2}} = \mysum{0}{\infty} \frac{\left(\frac{\lambda^2}{2}\right)^i}{i!} = 
+        \mysum{0}{\infty} \frac{\lambda^{(2i)}}{2^i i!}
+    \end{equation*}
+    For $i=0, 1$: $2^i i! = (2i)! \overset{\lambda > 0}{\Rightarrow}\frac{\lambda^{2i}}{(2i)!} = \frac{\lambda^{(2i)}}{2^i i!}$, but $\forall i>1$: $2^i i! < (2i)! \overset{\lambda > 0}{\Rightarrow} \frac{\lambda^{2i}}{(2i)!} < \frac{\lambda^{(2i)}}{2^i i!}$ 
+    and hence, summing over all $i$'s from 0 to $\infty$, we get 
+    \begin{equation*}
+        \mysum{0}{\infty} \frac{\lambda^{2i}}{(2i)!} \leq \mysum{0}{\infty} \frac{\lambda^{(2i)}}{2^i i!} \Rightarrow
+        \frac{1}{2} (e^\lambda + e^{-\lambda}) \leq e^{\frac{\lambda^2}{2}}, \; \forall \lambda > 0
+    \end{equation*}
+\end{proof}
+
+\subsection*{3}
+\begin{proof}
+    Plugging the result from subsection (2) into (1), we get:
+    
+    \begin{equation*}
+        P(X\geq t) \leq e^{-\lambda t}\cdot \left( \frac{e^\lambda}{2} + \frac{e^{-\lambda}}{2} \right)^k
+        \leq e^{-\lambda t}\cdot \left( e^{\frac{\lambda^2}{2}} \right)^k = e^{\frac{k}{2}\lambda^2 - \lambda t}
+    \end{equation*}
+    We want to find a valid value for $\lambda$ such that $e^{\frac{k}{2}\lambda^2 - \lambda t} \overset{!}{=} e^{-\frac{t^2}{2k}}$.
+    The lambda for which this holds must be a solution of the quadratic equation:
+    
+    \begin{equation*}
+        \frac{k}{2}\lambda^2 - \lambda t = -\frac{t^2}{2k}
+    \end{equation*}
+    
+    Noting that the discriminant $D = t^2 - 4 \frac{t^2}{2k} \frac{k}{2} = t^2 - t^2 = 0$, the equation has a single solution, which is $\lambda^* = \frac{t}{k}$.
+    This is a valid value for $\lambda$, since $k\in \mathbb{N}$ and since Chernov's inequality should only hold for $t > 0$, making $\lambda^* = \frac{t}{k} > 0$, 
+    as required for the inequalities from subsections 1,2 to hold.
+    
+    Verifying:
+    \begin{equation*}
+        e^{\frac{k}{2}{\lambda^*}^2 - \lambda^* t} = e^{\frac{k}{2}{\frac{t}{k}}^2 - \frac{t}{k} t} = e^{\frac{t^2}{2k} - \frac{t^2}{k}} = e^{-\frac{t^2}{2k}}
+    \end{equation*}
+    As required.    
+\end{proof}

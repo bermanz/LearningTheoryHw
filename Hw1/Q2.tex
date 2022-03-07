@@ -1,0 +1,49 @@
+\begin{algorithm}
+    \caption{K-Intevral-Union Classifier}\label{alg:cap}
+    \begin{algorithmic}
+        \Require k, $S\{(x_1, y_1), (x_2, y_2), ..., (x_m, y_m)\}$, $(x_i, y_i) \in \mathbb{R} \times \mathbb{R}^k \; \forall i \in [1, m]$
+        \For{$j=1:k$}
+            \State $\hat{l}_j \gets 1$
+            \State $\hat{u}_j \gets 0$
+        \EndFor
+        \For{$i=1:m$}
+            \For{$j=1:k$}
+                \If{$(y_i)_j=1$}
+                    \If{$x_i < \hat{l}_j$}
+                        \State $\hat{l}_j \gets x_i$
+                    \EndIf
+                    \If{$x_i > \hat{u}_j$}
+                        \State $\hat{u}_j \gets x_i$
+                    \EndIf
+                \EndIf
+            \EndFor
+        \EndFor \\
+    \Return $\hat{l}, \hat{u}$
+    \end{algorithmic}
+\end{algorithm}
+
+Following the same logic of excercise 1, We define $I_j = [l_j, u_j] \;, j\in [1, k]$, and $(\hat{I}_m)_j = [\hat{l}, \hat{u}]$.
+In contrast to excercise 1, the defined sub-intervals for each j interval are now designed such that $D(\Delta l_j) = D(\Delta u_j) < \frac{\epsilon}{2k}$
+(for which inherently $D(\Delta(I_j, \hat{I_j})) < \frac{\epsilon}{k}$). Since D is uniform, the probabilit for a sample not to fall within as $D(\Delta(I_j, \hat{I_j}))$ is the same $\forall j\in[1, k]$:
+\begin{equation*}
+    P(\underset{i=1:m}{\cup} x_i \notin \Delta(I_j, \hat{I}_j)) = 2\prod_{i=1}^{m}P(x_i \notin \Delta l_j) 
+    = 2\prod_{i=1}^{m} 1-\frac{\epsilon}{2k}= 2(1-\frac{\epsilon}{2k})^m \leq 2e^{-\frac{\epsilon}{2k}m}
+\end{equation*}
+
+
+To make the error rate of the complete classifier greater than $\epsilon$, it's necessary that non of the training examples to fall inside
+$\Delta(I_j, \hat{I}_j), \; \forall j\in[1,m]$, that is:
+\begin{equation*}
+    P(err > \epsilon) = P\left(\cup_{j=1}^{k} \left[ \cup_{i=1}^{m} x_i \notin \Delta(I_j, \hat{I}_j)) \right]\right) = \sum_{j=1}^{k} P\left(\cup_{i=1}^{m} x_i \notin \Delta(I_j, \hat{I}_j))\right)
+\end{equation*}
+Where the last transition is true since the intervals are non-overlapping, making the probabilities independent of eachother.
+Thus:
+\begin{equation*}
+    P(err > \epsilon) \leq \sum_{j=1}^{k} 2e^{-\frac{\epsilon}{2k}m} = 2ke^{-\frac{\epsilon}{2k}m} \overset{!}{<} \delta
+\end{equation*}
+By taking the log of both sides and simplifying, we get the desired sample complexity:
+\begin{equation*}
+    m(\epsilon, \delta) > \frac{2k}{\epsilon} log(\frac{2k}{\delta})
+\end{equation*}
+
+
