@@ -1,22 +1,32 @@
 \begin{algorithm}
     \caption{K-Intevral-Union Classifier}\label{alg:cap}
     \begin{algorithmic}
-        \Require k, $S\{(x_1, y_1), (x_2, y_2), ..., (x_m, y_m)\}$, $(x_i, y_i) \in \mathbb{R} \times \mathbb{R}^k \; \forall i \in [1, m]$
-        \For{$j=1:k$}
-            \State $\hat{l}_j \gets 1$
-            \State $\hat{u}_j \gets 0$
-        \EndFor
+        \Require k, $S\{(x_1, y_1), (x_2, y_2), ..., (x_m, y_m)\}$, $(x_i, y_i) \in \mathbb{R} \times \mathbb{R} \;  \forall i \in [1, m]$
+        \State $k_0 \gets 0$
         \For{$i=1:m$}
-            \For{$j=1:k$}
-                \If{$(y_i)_j=1$}
-                    \If{$x_i < \hat{l}_j$}
-                        \State $\hat{l}_j \gets x_i$
+            \State $l_{nn} \gets \underset{l_j}{argmin} |l_j - x_i|, \; j\in[1, k_0]$
+            \State $u_{nn} \gets \underset{l_j}{argmin} |u_j - x_i|, \; j\in[1, k_0]$
+            \If{$y_i=1$}
+                \If {$k_0 == 0$}
+                    \State $l_1 \gets x_i$
+                    \State $u_1 \gets x_i$
+                \Else
+                    \If{$x_i < l_{nn}$}
+                        \State $l_{nn} \gets x_i$
                     \EndIf
-                    \If{$x_i > \hat{u}_j$}
-                        \State $\hat{u}_j \gets x_i$
+                    \If{$x_i > u_{nn}$}
+                        \State $u_{nn} \gets x_i$
                     \EndIf
                 \EndIf
-            \EndFor
+            \Else
+                \If{$k_0 > 0$ and $l_{nn} < x_i < u_{nn}$} \Comment{Interval should be split into 2}
+                    \State $k_0 \gets k_0 + 1$
+                    \State $x_nn_l \gets \underset{x_m}{argmin} |x_m - x_i| s.t x_m < x_i, \; m\in[1, i]$
+                    \State $x_nn_u \gets \underset{x_m}{argmin} |x_m - x_i| s.t x_m > x_i, \; m\in[1, i]$
+                    \State $u_{k_0} \gets x_nn_l$
+                    \State $l_{k_0} \gets x_nn_u$
+                \EndIf
+            \EndIf
         \EndFor \\
     \Return $\hat{l}, \hat{u}$
     \end{algorithmic}

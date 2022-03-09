@@ -1,5 +1,5 @@
 \begin{algorithm}
-    \caption{Height Classifier}\label{alg:cap}
+    \caption{Height Classifier}
     \begin{algorithmic}
         \Require $S\{(x_1, y_1), (x_2, y_2), ..., (x_m, y_m)\}$, $(x_i, y_i) \in \mathbb{R} \times \mathbb{R} \; \forall i \in [1, m]$
         \State $\hat{l} \gets 1$
@@ -31,9 +31,10 @@ The probability for non of the examples $(x_i, +) \sim D$ from the sample of m e
 \end{equation*}
 
 Where the 1st transition is since the examples are i.i.d. The same applies for $D(\Delta u)$ from symmetry.
-Using the union bound:
+The event for the event $D(\Delta(I, \hat{I}) > \epsilon$ is achieved if no sample is drawn within any of the intervals $\Delta u \; \Delta l$.
+Therefore, and using the union bound:
 \begin{equation*}
-    P(D(\Delta(I, \hat{I})) > \epsilon) \leq P\left(\left[\underset{i=1:m}{\cap} x_i \notin \Delta l\right] \cup \left[\underset{i=1:m}{\cap} x_i \notin \Delta u\right]\right) 
+    P(D(\Delta(I, \hat{I})) > \epsilon) = P\left(\left[\underset{i=1:m}{\cap} x_i \notin \Delta l\right] \cup \left[\underset{i=1:m}{\cap} x_i \notin \Delta u\right]\right) 
     \leq P(\underset{i=1:m}{\cap} x_i \notin \Delta l) +  P(\underset{i=1:m}{\cap} x_i \notin \Delta u) \leq 2e^{-\frac{\epsilon}{2}m} \overset{!}{<} \delta
 \end{equation*}
 By taking the log of both sides and simplifying, we get the desired sample complexity:
