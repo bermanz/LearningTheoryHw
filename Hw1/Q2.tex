@@ -32,28 +32,47 @@
     \end{algorithmic}
 \end{algorithm}
 
+First, let's analyze the false-negative errors (1s classified as 0s).
 Following the same logic of excercise 1, We define $I_j = [l_j, u_j] \;, j\in [1, k]$, and $(\hat{I}_m)_j = [\hat{l}, \hat{u}]$.
-In contrast to excercise 1, the defined sub-intervals for each j interval are now designed such that $D(\Delta l_j) = D(\Delta u_j) < \frac{\epsilon}{2k}$
+In contrast to excercise 1, the defined sub-intervals for each j interval are now designed such that $D(\Delta l_j) = D(\Delta u_j) < \frac{\epsilon}{3k}$
 (for which inherently $D(\Delta(I_j, \hat{I_j})) < \frac{\epsilon}{k}$). Since D is uniform, the probabilit for a sample not to fall within as $D(\Delta(I_j, \hat{I_j}))$ is the same $\forall j\in[1, k]$:
 \begin{equation*}
     P(\underset{i=1:m}{\cup} x_i \notin \Delta(I_j, \hat{I}_j)) = 2\prod_{i=1}^{m}P(x_i \notin \Delta l_j) 
-    = 2\prod_{i=1}^{m} 1-\frac{\epsilon}{2k}= 2(1-\frac{\epsilon}{2k})^m \leq 2e^{-\frac{\epsilon}{2k}m}
+    = 2\prod_{i=1}^{m} 1-\frac{\epsilon}{3k}= 2(1-\frac{\epsilon}{3k})^m \leq 2e^{-\frac{\epsilon}{3k}m}
 \end{equation*}
-
-
-To make the error rate of the complete classifier greater than $\epsilon$, it's necessary that non of the training examples to fall inside
-$\Delta(I_j, \hat{I}_j), \; \forall j\in[1,m]$, that is:
+And using the union bound and the fact that there are at most k positive intervals:
 \begin{equation*}
-    P(err > \epsilon) = P\left(\cup_{j=1}^{k} \left[ \cup_{i=1}^{m} x_i \notin \Delta(I_j, \hat{I}_j)) \right]\right) = \sum_{j=1}^{k} P\left(\cup_{i=1}^{m} x_i \notin \Delta(I_j, \hat{I}_j))\right)
-\end{equation*}
-Where the last transition is true since the intervals are non-overlapping, making the probabilities independent of eachother.
-Thus:
-\begin{equation*}
-    P(err > \epsilon) \leq \sum_{j=1}^{k} 2e^{-\frac{\epsilon}{2k}m} = 2ke^{-\frac{\epsilon}{2k}m} \overset{!}{<} \delta
-\end{equation*}
-By taking the log of both sides and simplifying, we get the desired sample complexity:
-\begin{equation*}
-    m(\epsilon, \delta) > \frac{2k}{\epsilon} log(\frac{2k}{\delta})
+    P(err_{FN}) \leq P\left(\cup_{j=1}^{k} \left[ \cup_{i=1}^{m} x_i \notin \Delta(I_j, \hat{I}_j)) \right]\right) \leq \sum_{j=1}^{k} P\left(\cup_{i=1}^{m} x_i \notin \Delta(I_j, \hat{I}_j))\right) \leq 2ke^{-\frac{\epsilon}{3k}m}
 \end{equation*}
 
 
+Now, we'll move to analyzing the false-positive errors (0s classified as 1s). 
+A false-positive error occurs in case the algorithm miss-detects an interval gap between two adjacent positive intervals.
+
+Let's Denote by $\Delta I_{i}$ the interval gap between the i'th and i+1'th positive intervals.
+The probability for miss-detecting the interval gap $\Delta I_{i}$ is:
+\begin{equation*}
+    P(err_{FP_i}) = P(\underset{i=1:m}{\cup} x_i \notin \Delta I_{i})
+\end{equation*}
+There are 2 cases of interest:
+\begin{enumerate}
+    \item $\Delta I_{i} < \frac{\epsilon}{3k}$: Even if $\Delta I_{i}$ is mis-detected, it incurs a false-positive error that is $\frac{\epsilon}{3k} < $ (since D is uniform), regardless of m. Hence, even at the worst case of at-most k positive intervals and assuming non of the gaps between the intervals are detected (not really feasible, but it's only an upper bound), the total false-positive error will be $< \frac{\epsilon}{3}$, regardless of m.
+    \item $\Delta I_{i} > \frac{\epsilon}{3k}$: The probability for miss-detecting $\Delta I_{i} $ during training is:
+    \begin{equation*}
+        P(err_{FP_i}) = \prod_{i=1}^{m}P(x_i \notin \Delta I_{i}) 
+        = (1-\Delta I_{i})^m \leq (1-\frac{\epsilon}{3k})^m \leq e^{-\frac{\epsilon}{3k}m}
+    \end{equation*}
+    And by applying the union bound:
+    \begin{equation*}
+        P(err_{FP}) \leq P\left(\cup_{j=1}^{k} \left[ err_{FP_i} \right]\right) \leq \sum_{j=1}^{k} P\left(err_{FP_i}\right) \leq ke^{-\frac{\epsilon}{3k}m}
+    \end{equation*}
+\end{enumerate}
+
+To make the total error rate of the classifier greater than $\epsilon$, it's necessary that combined error probability of a false-negative and false positive error be greater than $\epsilon$:
+\begin{equation*}
+    P(err > \epsilon) = P(err_{FN} + err_{FP} > \epsilon) \leq 3ke^{-\frac{\epsilon}{3k}m} \overset{!}{<} \delta
+\end{equation*}
+by which we get the desired sample complexity:
+\begin{equation*}
+    m(\epsilon, \delta) > \frac{3k}{\epsilon} log(\frac{3k}{\delta})
+\end{equation*}
