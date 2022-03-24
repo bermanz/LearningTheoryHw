@@ -1,0 +1,9 @@
+First, we establish that from basic algebra, there exists infinitely many set of coefficients 
+$\alpha_i, \; i\in [0, d]$ such that the polynomial $\sum_{i=0}^d \alpha_i x$ has at most d roots, 
+that is, at most d zero-crossings. Hence, For every set of d+1 real (distinct) numbers, we can design 
+a set coefficients $\alpha_i$ that will generate zero-crossings at arbitrary locations, allowing each number
+to be arbitrarily classified as positive or negative, concluding that $VC(\mathcal{H}_{d-poly}) \geq d+1$.
+Clearly, for the same reason, a set of d+2 can't be shuttered by $\mathcal{H}_{d-poly}$, as regardless of the 
+choice of $\alpha_i$, at least 2 sampled examples will not be partitioned by any zero-crossing (since there are at most d of those). Hence, every hypothesis $h \in \mathcal{H}_{d-poly}$ will classify some arbitrary pair of sampled examples 
+with the same label, meaning $|\mathcal{H}_{d-poly}| < 2^{d+2}$, and thus $VC(\mathcal{H}_{d-poly}) < d+2$.
+Combining the observations, we have $VC(\mathcal{H}_{d-poly}) = d+1$.

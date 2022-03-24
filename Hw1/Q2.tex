@@ -21,10 +21,10 @@
             \Else
                 \If{$k_0 > 0$ and $l_{nn} < x_i < u_{nn}$} \Comment{Interval should be split into 2}
                     \State $k_0 \gets k_0 + 1$
-                    \State $x_nn_l \gets \underset{x_m}{argmin} |x_m - x_i| s.t x_m < x_i, \; m\in[1, i]$
-                    \State $x_nn_u \gets \underset{x_m}{argmin} |x_m - x_i| s.t x_m > x_i, \; m\in[1, i]$
-                    \State $u_{k_0} \gets x_nn_l$
-                    \State $l_{k_0} \gets x_nn_u$
+                    \State $x_{nn_l} \gets \underset{x_m}{argmin} |x_m - x_i| s.t x_m < x_i, \; m\in[1, i]$
+                    \State $x_{nn_u} \gets \underset{x_m}{argmin} |x_m - x_i| s.t x_m > x_i, \; m\in[1, i]$
+                    \State $u_{k_0} \gets x_{nn_l}$
+                    \State $l_{k_0} \gets x_{nn_u}$
                 \EndIf
             \EndIf
         \EndFor \\

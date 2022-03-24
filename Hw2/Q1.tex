@@ -1,0 +1,59 @@
+\subsection*{a}
+\begin{proof}
+    In order for a set $A$ to be shattered by a hypotheses class $\mathcal{H}$, the number of different hypotheses in the class must be at least $2^{|A|}$, 
+    since each element in $a \in A$ can be classified as either 1 or 0 by any hypothesis $h \in \mathcal{H}$. Put in math:
+\begin{equation*}
+    |\mathcal{H}| \geq 2^{|A|}
+\end{equation*}
+    assuming A is the maximal group shuttered by H, we get:
+    \begin{equation*}
+        |\mathcal{H}| \geq 2^{VC(H)} \Rightarrow VC(H) \leq \log (|\mathcal{H}|)
+    \end{equation*}
+    Where the last transition is due to the log function being monotonically increasing wherever it's defined.
+\end{proof}
+
+\subsection*{b}
+\begin{proof}
+    First, we will prove that $VC(\mathcal{H}_{mon})$ is at least $n$, by finding a set $A$ of size $n$ which is shuttered by $VC(\mathcal{H}_{mon})$.
+    
+    Consider the set of 1-hot vectors where $\boldsymbol{x}_i$ is the vector of all zeros except for the index i.
+    This is clearly a set of size n, that is $|A|=n$.
+    Let $A' \in A$, and let $i_{A'}$ be the set of indices which are hot for some $a' \in A'$.
+    Now, let $i_{A'^c}$ be the set of indices for which no $a' \in A'$ is hot.
+    The hypothesis which assigns $J_{neg} \gets i_{A'^c}, \; J_{pos} \gets \{\}$ will classify all $a' \in A'$ as 1, and all $a \in A'^c$ as 0. Clearly, the complementary hypothesis, which assigns $J_{neg} \gets i_{A^c}, \; J_{pos} \gets \{\}$ achieves the opposite result. Thus, we found a set $A$ such that:
+    \begin{equation*}
+        \forall A' \in A \; \exists h_{A'} \in \mathcal{H}_{mon} \; s.t \; h_{A'}(\boldsymbol{x}) = 
+        \begin{cases}
+            1, & \boldsymbol{x} \in A' \\
+            0, & else
+        \end{cases}
+    \end{equation*}
+    Concluding that $\mathcal{H}_{mon}$ shutters some group of size n, and so $VC(\mathcal{H}_{mon}) \geq n$. \\\\
+    
+    Looking at the pattern of the monomials, we notice that every $x_i \in \boldsymbol{x}$ can be assigned to either of the following:
+    \begin{enumerate}
+        \item $J_{pos}$
+        \item $J_{neg}$
+        \item Neither
+    \end{enumerate}
+    Thus, there are $3^n$ different monomials. 
+    Let $\boldsymbol{x}^c$ is the binary complement of $\boldsymbol{x}$, and $h^c(\boldsymbol{x})$ the complementary monomial of $h(\boldsymbol{x})$ (that is, every index of $\boldsymbol{x}$ that was assigned by $h(\boldsymbol{x})$ to $J_{pos}$ is assigned by $h^c(\boldsymbol{x})$ to $J_{neg}$ and vice versa).
+    It's easy to see that:
+    \begin{equation*}
+        h^c(\boldsymbol{x}^c) = h(\boldsymbol{x})
+    \end{equation*}
+    Meaning that every $\boldsymbol{x} \in \mathcal{X}$ shares a hypothesis with it's binary complementary. Thus, the number of different hypotheses equals the number of monomials, so:
+    \begin{equation*}
+        |\mathcal{H}_{mon}| = 3^n
+    \end{equation*}
+    Following the result from section (a), we know that:
+    \begin{equation*}
+        VC(\mathcal{H}_{mon}) \leq \log(|\mathcal{H}_{mon}|) = \log(3^n) = n log(3)
+    \end{equation*}
+    
+    To conclude, we saw that $\mathcal{H}_{mon}$ shatters a group of size n (meaning $VC(\mathcal{H}_{mon}) \geq n$) and that $VC(\mathcal{H}_{mon}) \leq n\log(3)$, hence $VC(\mathcal{H}_{mon}) = O(n)$.
+\end{proof}
+
+\subsection*{c}
+First, for sanity, we note that for $k=1$, the k-CFN reduces to the monomial class. 
+Indeed, for $k=1$, we get $VC(\mathcal{H}_{k-cnf}) = O(n)$ as proved in (b).
