@@ -1,9 +1,21 @@
-First, we establish that from basic algebra, there exists infinitely many set of coefficients 
-$\alpha_i, \; i\in [0, d]$ such that the polynomial $\sum_{i=0}^d \alpha_i x$ has at most d roots, 
-that is, at most d zero-crossings. Hence, For every set of d+1 real (distinct) numbers, we can design 
-a set coefficients $\alpha_i$ that will generate zero-crossings at arbitrary locations, allowing each number
-to be arbitrarily classified as positive or negative, concluding that $VC(\mathcal{H}_{d-poly}) \geq d+1$.
-Clearly, for the same reason, a set of d+2 can't be shuttered by $\mathcal{H}_{d-poly}$, as regardless of the 
-choice of $\alpha_i$, at least 2 sampled examples will not be partitioned by any zero-crossing (since there are at most d of those). Hence, every hypothesis $h \in \mathcal{H}_{d-poly}$ will classify some arbitrary pair of sampled examples 
-with the same label, meaning $|\mathcal{H}_{d-poly}| < 2^{d+2}$, and thus $VC(\mathcal{H}_{d-poly}) < d+2$.
-Combining the observations, we have $VC(\mathcal{H}_{d-poly}) = d+1$.
+First, let's show that there exists a set of d+1 points that is shuttered by H. 
+In fact, for any set of d+1 different scalars $\{x_i\}_{i=1}^d$, the matrix:
+\begin{equation*}
+    X = \begin{pmatrix}
+        1, x_1, x_1^2, ... x_1^d \\
+        1, x_2, x_2^2, ... x_2^d \\
+        \vdots \\
+        1, x_n, x_n^2, ... x_n^d \\
+    \end{pmatrix}
+\end{equation*}
+is non-singular. hence, for any arbitrary vector $\boldsymbol{y} \in \mathbb{R}^{d+1}$, the linear system:
+\begin{equation*}
+    X \cdot \boldsymbol{\alpha} = \boldsymbol{y}
+\end{equation*}
+is solvable and has a unique solution $\boldsymbol{\alpha} = X^{-1}\boldsymbol{y}$. This means that for every arbitrary set of labels $sgn(\boldsymbol{y})$, we can find a set of coefficients $\boldsymbol{\alpha}$, such that:
+\begin{equation*}
+    sgn(X \cdot \boldsymbol{\alpha}) = sgn(\boldsymbol{y})
+\end{equation*}
+Which is precisely the definition of a set being shuttered by a concept class.
+
+To show that no set of size $d+2$ can be shuttered by $H$, we'll follow the fundamental theorem of algebra, which states that a polynomial of degree d has exactly d complex roots. Assuming all those roots are real and different, the discussed polynomial has d zero-crossings (in every other case, it has less), partitioning the x-axis to at most $d+1$ classification intervals. Therefore, any number of $d+2$ can't be shuttered by $\mathcal{H}$, since for every set of coefficients, at least 2 points will will belong in the same interval, and so will have the same label.

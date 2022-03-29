@@ -1,0 +1,46 @@
+\subsection*{1}
+In order for the points to be shattered, there must exist $\omega \in \mathbb{R}$ for every possible labeling configuration.
+For a point $a \in \mathcal{X}$ to be labeled as '1', $\omega$ needs to satisfy:
+\begin{equation*}
+    2 \pi k < \omega a < \pi (2k + 1) \Rightarrow \frac{2 \pi k}{a} < \omega < \frac{\pi (2k + 1)}{a},  \; k\in \mathbb{Z}
+\end{equation*}
+Where we assumed w.l.o.g that $a>0$. Similarly, for $a$ to be classified as '0':
+\begin{equation*}
+    \frac{\pi(2k+1)}{a} < \omega < \frac{2\pi(k + 1)}{a},  \; k\in \mathbb{Z}
+\end{equation*}
+
+Following the above, in order to label $x$ as '1' and $2x, 4x$ as '0', the intersection interval for which $\omega$ satisfies this labeling is:
+\begin{equation*}
+    \frac{3/4 \pi + 2 \pi k}{x} < \omega < \frac{\pi (2k + 1)}{x},  \; k\in \mathbb{Z}
+\end{equation*}
+
+This rule admits:
+\begin{equation*}
+    9/4 \pi + 2 \pi k < 3x \omega  < 3\pi (2k + 1) \Rightarrow
+    1/4 \pi + 6 \pi k < 3x \omega  < 6\pi k + \pi \; k\in \mathbb{Z}
+\end{equation*}
+
+However, for an argument that is within this interval, we get:
+\begin{equation*}
+    \sin(3x\omega) > 0 \Rightarrow sign(\sin(3x\omega)) = 1
+\end{equation*}
+
+That is:
+\begin{equation*}
+    \nexists h\in \mathcal{H} \; s.t. \; h(x)=1, h(2x)=h(3x)=h(3x)=0
+\end{equation*}
+Hence the points $x, 2x, 3x, 4x$ can't be shuttered by $\mathcal{H}, \; \forall x\in \mathbb{R}$
+
+\subsection*{2}
+Let a subset $|A|=k \;, A\in \mathcal{X}$ be of the form $a_m = 2^{-m} \; m=1,...k$.
+for $a_m$ to be classified as '1':
+\begin{equation*}
+   2^m 2\pi k < \omega < 2^m (2\pi k + \pi),  \; k\in \mathbb{Z}
+\end{equation*}
+and is else classified as '0'. Now, for $a_{m+1}$, we get '1' if:
+\begin{equation*}
+    2^{m+1} 2\pi k < \omega < 2^{m+1} (2\pi k + \pi),  \; k\in \mathbb{Z}
+ \end{equation*}
+and is else classified as '0'. For every $k\in \mathbb{Z}$, the interval of $\omega$ for which $a_{m+1}$ is classified as '1' contains values for which $a_m$ is classified both as '1' and as '0'. The same can be said for when $a_{m+1}$ is classified as '0'.
+
+Hence, for such a choice of A, we guarantee the existence of $\omega \in \mathbb{R}$ which arbitrarily classifies $a_m$ and $a_{m+1}$. As the same logic can be applied $\forall m\in \mathbb{N}$, by induction, it is true for any set of size k, and for any k. Thus, we can construct a finite set of any size that is shuttered by $H$, meaning the VC dimension of H is infinite. 

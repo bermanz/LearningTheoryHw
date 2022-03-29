@@ -1,0 +1,33 @@
+\subsection*{1}
+Assuming by contradiction that a class $\mathcal{H}$ that is PAC learnable has an infinite VC dimension, any subset $A \in \mathcal{X}$ of size d can be shattered by $\mathcal{H}$, where $\mathcal{X}$ is the space of all different subsets of size d. Since $A$ is shuttered by $\mathcal{H}$:
+\begin{equation*}
+    |\mathcal{H}| = \mathcal{Y}^|A| = |\mathcal{Y}|^d \Rightarrow H = \mathcal{Y}^\mathcal{X}
+\end{equation*}
+Where $\mathcal{Y}$ is the class of all possible classification labels.
+
+This is precisely the setting that we saw in example 3.1 from the lectures, where it was shown that any learning algorithm will fail for some underlying distribution given less than $\frac{\log (|\mathcal{H}|)}{8} = \log(|\mathcal{Y}|) \cdot \frac{d}{8}$ training samples, which is proportional to d.
+
+As this argument holds $\forall d \in \mathbb{N}$ (since the VC dimension of $\mathcal{H}$ is infinite), taking $d\rightarrow \infty$, an algorithm will need more than $O(\frac{d}{8}) \rightarrow \infty$ training samples to succeed, which is obviously not feasible, in contradiction to the assumption that $\mathcal{H}$ can have an infinite VC dimension.
+
+\subsection*{2}
+By definition, a class $\mathcal{H}$ has the uniform convergence property if $\forall h \in \mathcal{H}$ and $\forall \epsilon, \delta \in (0, 1)$ there exists a sample of size $m \geq m(\epsilon, \delta)$ such that for any D over $\mathcal{X}$ we have:
+
+\begin{equation*}
+    \mathbb{P}(|err_S(h) - err(h)| < \epsilon) \geq 1-\delta
+\end{equation*}
+
+As this is true $\forall h \in \mathcal{H}$, it's also true for the optimal hypothesis $h^* = \underset{h \in \mathcal{H}} err(h)$
+\begin{equation*}
+    \mathbb{P}(|err_S(h^*) - err(h^*)| < \epsilon) \geq 1-\delta
+\end{equation*}
+
+By Which :
+\begin{equation*}
+    \mathbb{P}(err_S(h^*) < err(h^*) + \epsilon) \geq 1-\delta
+\end{equation*}
+
+Now let A an ERM rule, then $err_S(h_S^A) \leq err_S(h^*)$, so:
+\begin{equation*}
+    \mathbb{P}(err_S(h_S^A) < err(h^*) + \epsilon) \geq \mathbb{P}(err_S(h^*) < err(h^*) + \epsilon) \geq 1-\delta
+\end{equation*}
+Which proves that $\mathcal{H}$ is agnostic learnable by an ERM rule.

@@ -1,0 +1,18 @@
+\subsection*{1}
+\begin{equation*}
+    \tau_\mathcal{F}(m) = \underset{A\in \mathcal{X},|A|=m}{max}|\mathcal{F}_A| 
+    = \underset{A\in \mathcal{X},|A|=m}{max}|\circ_{i=1}^t\mathcal{F}_{i_A}| 
+    \leq \prod_{i=1}^t \underset{A_i\in \mathcal{X},|A_i|=m}{max}|\mathcal{F}_{i_{A_i}}|
+    = \prod_{i=1}^t \tau_{\mathcal{F}_i}(m)
+\end{equation*}
+Where the 3rd transition is valid since the subset A, which is optimal for the composition of functions $\mathcal{F}$ is sub-optimal for each of the components $\mathcal{F}_i$.
+
+\subsection*{2}
+Similarly to the previous section:
+\begin{equation*}
+    \tau_\mathcal{F}(m) = \underset{A\in \mathcal{X},|A|=m}{max}|\mathcal{F}_A| 
+    = \underset{A\in \mathcal{X},|A|=m}{max}|\prod_{i=1}^t\mathcal{F}_{i_A}| 
+    \leq \prod_{i=1}^t \underset{A_i\in \mathcal{X},|A_i|=m}{max}|\mathcal{F}_{i_{A_i}}|
+    = \prod_{i=1}^t \tau_{\mathcal{F}_i}(m)
+\end{equation*}
+Where the 3rd transition is valid for the same arguments as before.
