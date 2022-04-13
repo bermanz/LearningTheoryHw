@@ -57,14 +57,14 @@
 \subsection*{c}
 First, let's analyze the number of different possible clauses. Given that the clause $C_i$ has $k$ different literals, chosen from a collection of $n$ possible literals, there are $n \choose k$ literal configurations. In each of those, a literal $l_j$ can either take the form of $x_t$ or $1-x_t$, thus the total number of different clauses is:
 \begin{equation*}
-    n \choose k \cdot 2^k
+    {n \choose k} \cdot 2^k
 \end{equation*}
 Moving to the k-CNF functions, every possible clause can either appear or not in the conjunction, thus resulting in a total of:
 \begin{equation*}
-    |H_{\text{k-cnf}}| = 2^{n\_{\text{clauses}}} = 2^{n \choose k \cdot 2^k}
+    |H_{\text{k-cnf}}| = 2^{n\_{\text{clauses}}} = 2^{{n \choose k} \cdot 2^k}
 \end{equation*}
 different k-CNF functions. Therefore, and using section (1):
 \begin{equation*}
-    VC(H_{\text{k-cnf}}) \leq \log(|H_{\text{k-cnf}}|) = n \choose k \cdot 2^k \cdot \log 2
+    VC(H_{\text{k-cnf}}) \leq \log(|H_{\text{k-cnf}}|) = {n \choose k} \cdot 2^k \cdot \log 2
 \end{equation*}
-Hence, and assuming a constant k, we have that $VC(H_{\text{k-cnf}}) = O(n \choose k)$.
+Hence, and assuming a constant k, we have that $VC(H_{\text{k-cnf}}) = O({n \choose k}) = O(n^k)$.
