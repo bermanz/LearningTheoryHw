@@ -20,7 +20,7 @@ class Perceptron(ABC):
         return pd.read_csv(fr'Hw3\{set_type}.csv', names=["$x_1$", "$x_2$", "y"])
 
     def plot_dataset(self):
-        plt.figure()
+        plt.figure(label="train_set")
         sns.scatterplot(data=self.train_set, x="$x_1$", y="$x_2$", hue="y", palette="pastel")
         plt.title("Training Set")
     
@@ -75,11 +75,11 @@ class Perceptron(ABC):
 
     def eval(self, test_set):
         y_hat = self.predict(test_set)
-        res = pd.DataFrame(data=np.hstack((test_set.values, np.atleast_2d(y_hat).T)), columns=[*test_set.columns, "y_hat"])
+        res = pd.DataFrame(data=np.hstack((test_set.values, np.atleast_2d(y_hat).T)), columns=[*test_set.columns, "$\hat{y}$"])
         return res
 
 
-class PolyKernel(Perceptron):
+class PolyPerceptron(Perceptron):
 
     def __init__(self, q:int) -> None:
         super().__init__()
@@ -99,7 +99,7 @@ class PolyKernel(Perceptron):
         return self._activate(x_prod)
 
 
-class RbfKernel(Perceptron):
+class RbfPerceptron(Perceptron):
 
     def __init__(self, sigma:float) -> None:
         super().__init__()
@@ -127,26 +127,28 @@ class RbfKernel(Perceptron):
 
 def main():
     # Plot training set:
-    perceptron = PolyKernel(q=3)
+    perceptron = PolyPerceptron(q=3)
     perceptron.plot_dataset()
     
     # experiment to get the correct hyper-parameters for an ERM algorithm, and show the results over the test set:
     train_set = perceptron._get_dataset("train")
     test_set = perceptron._get_dataset("test")
-    _, ax_T = plt.subplots(2, 1)
-    _, ax_test = plt.subplots(1, 2)
+    _, ax_T = plt.subplots(1, 2, sharey=True, figsize=(16, 9), label="T_vs_param")
+    _, ax_test = plt.subplots(1, 2, figsize=(16, 9), label="class_est")
 
+    err_tbl = pd.DataFrame(index=["Polynomial", "Rbf"], columns=["train", "test"])
+    err_tbl[:] = 0
     for j, kernel_type in enumerate(["polynomial", "rbf"]):
 
         # Find optimal T for arbitrary hyper-parameter values:
         if kernel_type == "polynomial":
-            perceptron_prot = PolyKernel
+            perceptron_prot = PolyPerceptron
             hyper_grid = np.arange(start=1, stop=11)
-            param_name = "order"
+            param_name = "q"
         elif kernel_type == "rbf":
-            perceptron_prot = RbfKernel
+            perceptron_prot = RbfPerceptron
             hyper_grid = np.logspace(-5, 5, base=2, num=10)
-            param_name = "$sigma$"
+            param_name = "$\sigma$"
         iters = []
         for param in hyper_grid:
             perceptron = perceptron_prot(param)
@@ -169,13 +171,22 @@ def main():
         test_res = perceptron.eval(test_set)
         test_res["set"] = "test"
         res = pd.concat([train_res, test_res], ignore_index=True)
-        res_err = res[res["y"] != res["y_hat"]]
+        res_err = res[res["y"] != res["$\hat{y}$"]]
         res.drop(res_err.index, inplace=True)
-        sns.scatterplot(ax=ax_test[j], data=res, x="$x_1$", y="$x_2$", hue="y_hat", style="set", palette="pastel")
-        sns.scatterplot(ax=ax_test[j], data=res_err, x="$x_1$", y="$x_2$", hue="y_hat", style="set", palette=["green"], legend=False, markers={"train":"o", "test":"X"})
-        ax_test[j].set_title(f"{kernel_type.capitalize()} kernel with {param_name}={hyper_param}")
+        sns.scatterplot(ax=ax_test[j], data=res, x="$x_1$", y="$x_2$", hue="$\hat{y}$", style="set", palette="pastel")
+        sns.scatterplot(ax=ax_test[j], data=res_err, x="$x_1$", y="$x_2$", hue="$\hat{y}$", style="set", palette=["green"], legend=False, markers={"train":"o", "test":"X"})
+        ax_test[j].set_title(f"{kernel_type.capitalize()} kernel with {param_name}={hyper_param} (T={T})")
 
-    
+        # log errors:
+        for _, err in res_err.iterrows():
+            err_tbl.loc[kernel_type.capitalize(), err["set"]] += 1
+
+    err_tbl.to_csv(r"Hw3\Class_err.csv")
+    print(err_tbl)
+    plt.gcf()
+    for label in plt.get_figlabels():
+        plt.figure(label)
+        plt.savefig(rf"Hw3\{label}.png")
     plt.show()
 
 
