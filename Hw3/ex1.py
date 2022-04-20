@@ -1,13 +1,9 @@
 
 from abc import abstractmethod, ABC
-from functools import partial
 import numpy as np
 import pandas as pd
 import seaborn as sns
-sns.set_style("white")
 import matplotlib.pyplot as plt
-from p_tqdm import t_map
-
 
 class Perceptron(ABC):
 
@@ -181,6 +177,7 @@ def main():
         for _, err in res_err.iterrows():
             err_tbl.loc[kernel_type.capitalize(), err["set"]] += 1
 
+    # save the results:
     err_tbl.to_csv(r"Hw3\Class_err.csv")
     print(err_tbl)
     plt.gcf()
