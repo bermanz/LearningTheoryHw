@@ -129,8 +129,8 @@ def main():
     # experiment to get the correct hyper-parameters for an ERM algorithm, and show the results over the test set:
     train_set = perceptron._get_dataset("train")
     test_set = perceptron._get_dataset("test")
-    _, ax_T = plt.subplots(1, 2, sharey=True, figsize=(16, 9), label="T_vs_param")
-    _, ax_test = plt.subplots(1, 2, figsize=(16, 9), label="class_est")
+    _, ax_T = plt.subplots(1, 2, sharey=True, label="T_vs_param")
+    _, ax_test = plt.subplots(1, 2, sharey=True, label="class_est")
 
     err_tbl = pd.DataFrame(index=["Polynomial", "Rbf"], columns=["train", "test"])
     err_tbl[:] = 0
@@ -153,9 +153,10 @@ def main():
         if kernel_type == "rbf":
             ax_T[j].set_xscale("log")
         ax_T[j].set_xlabel(param_name)
-        ax_T[j].set_ylabel("T")
         ax_T[j].set_title(f"{kernel_type.capitalize()} Kernel")
         ax_T[j].grid()
+        if j==0:
+            ax_T[j].set_ylabel("T")
 
         # Choose one hyper-param and show performance on test set:
         hyper_grid = [hyper_param for iter, hyper_param in zip(iters, hyper_grid) if not iter is None]
@@ -183,7 +184,8 @@ def main():
     plt.gcf()
     for label in plt.get_figlabels():
         plt.figure(label)
-        plt.savefig(rf"Hw3\{label}.png")
+        plt.tight_layout()
+        plt.savefig(rf"Hw3\{label}.png", bbox_inches='tight')
     plt.show()
 
 
