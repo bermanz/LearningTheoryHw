@@ -21,6 +21,7 @@ class AdaBoost:
         self.x_train = np.loadtxt(fname=r"Hw3\MNIST_train_images.csv", delimiter=",")
         self.y_train = np.loadtxt(fname=r"Hw3\MNIST_train_labels.csv", delimiter=",")
         self.T = T
+        self.theta_grid = np.arange(256+1)
         if pre_trained:
             self.load_learners()
         else:
@@ -37,28 +38,25 @@ class AdaBoost:
         )
         plt.title(f"index={idx}")
 
-    def h_theta(self, x, idx, theta, polarity=0):
-        """returns the prediction over the input x at pixel index idx, given a threshould theta and a polarity"""
-        base = (x[:, idx] < theta).astype(int) * 2 - 1
-        return base if polarity == 0 else -base
+    def get_all_pred_errs(self):
+        """calculate the prediction errors of all possible weak-predictors over the training set"""
+        all_pred_errs = np.empty((len(self.theta_grid), *self.x_train.shape), dtype=bool)
+        for theta in tqdm(self.theta_grid, desc="pre-predicting all weak learners", leave=False): 
+            h_theta = WeakLearner(idx=np.arange(self.x_train.shape[-1]), theta=theta)
+            sample_pixels_class = h_theta.predict(self.x_train)
+            all_pred_errs[theta] = sample_pixels_class != np.tile(
+                self.y_train, [self.x_train.shape[1], 1]).T
 
-    def eval_threshold(self, theta, p_t):
-        #  based classification:
-        h_theta = WeakLearner(idx=np.arange(784), theta=theta)
-        sample_pixels_class = h_theta.predict(self.x_train).T
-        sample_pixels_fails = sample_pixels_class != np.tile(
-            self.y_train, [self.x_train.shape[1], 1]
-        )
-        tot_fails = sample_pixels_fails @ p_t
-        conj_fails = (
-            ~sample_pixels_fails @ p_t
-        )  # reflects the failure of conjugate h_theta (with polarity=1)
+        return all_pred_errs
 
-        comb_fails = np.asarray([tot_fails, conj_fails])
-        best_idxs = np.argmin(comb_fails, axis=1)
-        best_polarity = np.argmin([comb_fails[i, best_idxs[i]] for i in [0, 1]])
+    def eval_threshold(self, pred_errs, theta, p_t):
+        
+        all_polarity_fails = np.asarray([pred_errs.T, ~pred_errs.T])
+        all_polarity_expectation = all_polarity_fails @ p_t
+        best_idxs = np.argmin(all_polarity_expectation, axis=1)
+        best_polarity = np.argmin([all_polarity_expectation[i, best_idxs[i]] for i in [0, 1]])
         best_idx = best_idxs[best_polarity]
-        best_err = comb_fails[best_polarity, best_idx]
+        best_err = all_polarity_expectation[best_polarity, best_idx]
         best_cand = {
             "idx": best_idx,
             "theta": theta,
@@ -67,12 +65,10 @@ class AdaBoost:
         }
         return best_cand
 
-    def get_best_classifier(self, p_t):
+    def get_best_classifier(self, all_pred_errs, p_t):
         best_classifiers = [
-            self.eval_threshold(theta, p_t)
-            for theta in tqdm(
-                range(256), desc="evaluating for different thetas", leave=False
-            )
+            self.eval_threshold(all_pred_errs[theta], theta, p_t)
+            for theta in tqdm(self.theta_grid, desc="Finding best weak classifier", leave=False)
         ]
         best_classifiers_sorted = sorted(best_classifiers, key=lambda x: x["p_err"])
         best_classifier = best_classifiers_sorted.pop(0)
@@ -92,9 +88,11 @@ class AdaBoost:
         m = len(self.y_train)
         p_t = np.full_like(self.y_train, fill_value=1 / m)
 
+        all_pred_errs = self.get_all_pred_errs()
+
         # iterate for T iterations:
         for t in tqdm(range(self.T), desc="AdaBoost Iterations"):
-            h_t_params, epsilon_t = self.get_best_classifier(p_t)
+            h_t_params, epsilon_t = self.get_best_classifier(all_pred_errs, p_t)
             h_t = WeakLearner(**h_t_params)
             alpha_t = 0.5 * np.log((1 - epsilon_t) / epsilon_t)
             p_t_update_arg = p_t * np.exp(
