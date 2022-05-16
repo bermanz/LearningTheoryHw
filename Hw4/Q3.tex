@@ -1,0 +1,49 @@
+\subsection*{a}
+\begin{proof}    
+    Let $h(\pmb{w}) = \frac{1}{m}\sum_{i=1}^m \ell\left(\pmb{w}, (x_i, y_i)\right)$. Since $\ell\left(\pmb{w}, (x, y)\right)$ is convex, so is $h(\pmb{w})$ (as an affine combination of convex functions), and hence:
+    \begin{equation*}
+        h(\pmb{w}) - h(\pmb{v}) \geq \nabla h(\pmb{v})^T \cdot (\pmb{w}-\pmb{v})
+    \end{equation*}
+    
+    In addition, we note that:
+    
+    \begin{equation*}
+        \begin{split}            
+            ||\pmb{w}||^2 - ||\pmb{v}||^2 &= 2<\pmb{w}, \pmb{v}> - 2||\pmb{v}||^2 + ||\pmb{w} - \pmb{v}||^2 \\
+            &= 2\left(\pmb{v}^T \cdot (\pmb{w} - \pmb{v}) \right) + ||\pmb{w} - \pmb{v}||^2 \\
+            &= \nabla(||\pmb{v}||^2)^T \cdot (\pmb{w} - \pmb{v}) + ||\pmb{w} - \pmb{v}||^2
+        \end{split}
+    \end{equation*}
+    
+    Plugging all in, we have:
+    \begin{equation*}
+        \begin{split}
+            F_\lambda(\pmb{w}) - F_\lambda(\pmb{v}) &= \frac{\lambda}{2}(||\pmb{w}||^2 - ||\pmb{v}||^2) + h(\pmb{w}) - h(\pmb{v}) \\ 
+            &= \frac{\lambda}{2}\left(\nabla(||\pmb{v}||^2)^T \cdot (\pmb{w} - \pmb{v}) + ||\pmb{w} - \pmb{v}||^2\right) + h(\pmb{w}) - h(\pmb{v}) \\
+            &\geq \frac{\lambda}{2}\left(\nabla(||\pmb{v}||^2)^T \cdot (\pmb{w} - \pmb{v}) + ||\pmb{w} - \pmb{v}||^2\right) + \nabla h(\pmb{v})^T \cdot (\pmb{w}-\pmb{v}) \\
+            &= \left(\nabla(\frac{\lambda}{2}||\pmb{v}||^2 + h(\pmb{v}))^T\right) \cdot (\pmb{w} - \pmb{v}) + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2 \\
+            &= \nabla F_\lambda(\pmb{v})^T \cdot(\pmb{w} - \pmb{v}) + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2
+        \end{split}
+    \end{equation*}
+    
+    So we conclude that:
+    \begin{equation*}
+        F_\lambda(\pmb{w}) \geq F_\lambda(\pmb{v}) + \nabla F_\lambda(\pmb{v})^T \cdot(\pmb{w} - \pmb{v}) + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2
+    \end{equation*}
+    Hence $F_\lambda(\pmb{w})$ is $\lambda$ strongly convex
+\end{proof}
+
+\subsection*{b}
+First, let's calculate the gradient of $\ell\left(\pmb{w}, (x_i, y_i)\right)$:
+\begin{equation*}
+    \nabla \ell\left(\pmb{w}, (x_i, y_i)\right) = -y \frac{e^{-y \pmb{w} \pmb{x}}}{1+e^{-y \pmb{w} \pmb{x}}} \pmb{x}
+    = \frac{-y}{1+e^{y \pmb{w} \pmb{x}}} \pmb{x}
+\end{equation*}
+Where the last transition is obtained by multiplying and dividing by $e^{y \pmb{w} \pmb{x}}$, which is non-zero for any possible combination of $y, \pmb{w},\pmb{x}$. Taking the standard norm of the gradient:
+\begin{equation*}
+    ||\nabla \ell\left(\pmb{w}, (x_i, y_i)\right)|| = ||\frac{-y}{1+e^{y \pmb{w} \pmb{x}}} \pmb{x}|| = |\frac{-y}{1+e^{y \pmb{w} \pmb{x}}}| ||\pmb{x}|| = |\frac{1}{1+e^{y \pmb{w} \pmb{x}}}| ||\pmb{x}|| \leq 1 \cdot B = B
+\end{equation*}
+Where the second-last transition is since $y \in \{-1, 1\}$ and the last transition since $0<|\frac{1}{1+e^{y \pmb{w} \pmb{x}}}| \leq 1$ and since it's given that $||\pmb{x}|| \leq B$. Hence, the parameter Liphschitzness of $\ell\left(\pmb{w}, (x_i, y_i)\right)$ is $B$.
+
+% TODO: Complete smoothness!
+

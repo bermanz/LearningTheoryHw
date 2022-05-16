@@ -1,0 +1,11 @@
+Let $k=\lceil \log_{\delta_0}\delta \rceil$, then if we repeatedly sample an i.i.d set of size $m > m(\epsilon)$ and run algorithm A over the sampled set $k$ times, the probability that none of the k learned hypotheses achieves the required error rate is the product of the marginal probabilities, that is:
+
+\begin{equation*}
+    \mathbb{P}\left(\underset{i\in[k]}{\cap} err(h^A_{S_i}) > \underset{h\in\mathcal{H}}{min} err(h) + \epsilon\right) 
+     = \prod_{i\in[k]} \mathbb{P}\left(err(h^A_{S_i}) > \underset{h\in\mathcal{H}}{min} err(h) + \epsilon\right)
+     < \delta_0^k < \delta_0^{\log_{\delta_0}\delta} = \delta
+\end{equation*}
+
+Which guarantees that the probability that some of the k learned hypotheses achieves the required error rate with probability of at least $1-\delta$.
+
+Thus, repeatedly sampling an i.i.d set of size $m > m(\epsilon)$ and run algorithm A over the sampled set $k=\lceil \log_{\delta_0}\delta \rceil$ times and finally choosing the E.R.M amongst the learned set of hypotheses is a construction of a learning algorithm that satisfies the requirements.
