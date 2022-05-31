@@ -1,0 +1,8 @@
+As all the conditions of theorem 9.8 still apply in this setup, much like in theorem 9.13, we only need to prove that $\mathcal{R}_m \leq \frac{B}{\sqrt{m}}$. However, following the proof of 9.13, it's clear that $\mathcal{R}_m(\boldsymbol{w}, \boldsymbol{x}) = f(<\boldsymbol{w}, \boldsymbol{x}>)$, that is, the contribution of the arguments $\boldsymbol{w}, \boldsymbol{x}$ to the Radamacher complexity is only through the inner-product between them. Thus, we can prove the claim by following the proof of 9.13 in the notes exactly, with the following small changes:
+
+\begin{enumerate}
+    \item the 3rd equality RHS should be scaled by $B$, as now the $\boldsymbol{w}$ that maximizes the inner product is a B-normed vector that's collinear with $\sum_{i=1}^m \sigma_i \boldsymbol{x}_i$.
+    \item the term $max||x_i||^2$ in the last transition is now worth 1 instead of $B^2$
+\end{enumerate}
+Eventually, as the proof relies on the product of those scales, the RHS of the inequality remains the same as in 9.13, and hence the result is the same. 
+

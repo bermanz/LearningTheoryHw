@@ -1,0 +1,58 @@
+\subsection*{a}
+\subsubsection*{1}
+\begin{proof}    
+    If we plug in $\boldsymbol{w}=\boldsymbol{0}$, we get:
+    \begin{equation*}
+        \mathcal{L}_{\lambda, S}(\boldsymbol{w=0}) = \frac{\lambda}{2}||\boldsymbol{0}|| 
+        + \frac{1}{m} \sum_{i=1}^{m} max\{0, 1-0\} = \frac{1}{m} \sum_{i=1}^{m} 1 = 1
+    \end{equation*}
+    
+    Now let $\boldsymbol{w}_{\lambda, S} = \underset{\boldsymbol{w}}{argmin} \mathcal{L}_{\lambda, S}(\boldsymbol{w})$. By definition, $\mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S}) \leq \mathcal{L}_{\lambda, S}(\boldsymbol{0}) = 1$, proving the desired inequality
+\end{proof}
+
+\subsubsection*{2}
+\begin{proof}
+    Following subsection (1), we have:
+    \begin{equation*}
+        \begin{split}            
+            & \mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S}) = \frac{\lambda}{2}||\boldsymbol{w}_{\lambda, S}|| 
+            + \frac{1}{m} \sum_{i=1}^{m} max\{0, 1-y \boldsymbol{w}_{\lambda, S} \cdot \boldsymbol{x}\} \leq 1 \\
+            \Rightarrow & \frac{\lambda}{2}||\boldsymbol{w}_{\lambda, S}|| \leq 1 - \frac{1}{m} \sum_{i=1}^{m} max\{0, 1-y \boldsymbol{w}_{\lambda, S} \cdot \boldsymbol{x}\} \leq 1
+        \end{split}
+    \end{equation*}
+    Where the last transition is since $max\{0, 1-y \boldsymbol{w}_{\lambda, S} \cdot \boldsymbol{x}\} \geq 0 \; \forall y, \boldsymbol{w}_{\lambda, S}, \boldsymbol{x}$. The desired result is obtained by multiplying both sides by $\frac{2}{\lambda}$ (which doesn't alter the inequality's direction since $\lambda > 0$) and taking the square root (which also doesn't change the inequality's direction since it's a monotonically increasing function).
+\end{proof}
+
+\subsection*{b}
+\begin{proof}
+    There are 2 possibilities:
+    \begin{enumerate}
+        \item $sign(\boldsymbol{w}\cdot \boldsymbol{x}) = y$, in which case $\ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x})) = 0$ and $\ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y) = max\{0, 1-\alpha\}$ where $\alpha > 0$. Hence, $\ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y)$ can only take values greater then 0, and so is an upper-bound for $\ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x}), y) = 0$ in this case.
+        \item $sign(\boldsymbol{w}\cdot \boldsymbol{x}) \neq y$, in which case $\ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x})) = 1$ and $\ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y) = max\{0, 1 + \alpha\} = 1 + \alpha$ where $\alpha > 0$. Hence, $\ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y)$ can only take values greater then 1, and so is an upper-bound for $\ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x}), y) = 1$ in this case.
+    \end{enumerate}
+    Concluding that $\ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x}), y) \leq \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y) \; \forall \boldsymbol{w}$. Clearly, since this holds $\forall y, \boldsymbol{x}$, this is also true in expectation, that is:
+    \begin{equation*}
+        \mathbb{E} \ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x}), y) \leq \mathbb{E} \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y)
+    \end{equation*}
+
+    Simplifying the expectation for the 0-1 loss, we get:
+    \begin{equation*}
+        \begin{split}            
+            \mathbb{E} \ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x}), y)  
+            &= \ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x}) \neq y) \cdot D(sign(\boldsymbol{w}\cdot \boldsymbol{x}) \neq y) + \ell_{0, 1}(sign(\boldsymbol{w}\cdot \boldsymbol{x}) = y) \cdot D(sign(\boldsymbol{w}\cdot \boldsymbol{x}) = y) \\
+            &= 1 \cdot D(sign(\boldsymbol{w}\cdot \boldsymbol{x}) \neq y) + 0 \cdot D(sign(\boldsymbol{w}\cdot \boldsymbol{x}) = y) = \cdot D(sign(\boldsymbol{w}\cdot \boldsymbol{x}) \neq y) 
+            = err(\boldsymbol{w})
+        \end{split}
+    \end{equation*}
+
+    Hence:
+    \begin{equation*}
+        err(\boldsymbol{w}) \leq \mathbb{E} \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y)
+    \end{equation*}
+    As required.
+\end{proof}
+
+\subsection*{c}
+\begin{proof}
+    
+\end{proof}
