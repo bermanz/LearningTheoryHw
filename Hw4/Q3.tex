@@ -45,5 +45,51 @@ Where the last transition is obtained by multiplying and dividing by $e^{y \pmb{
 \end{equation*}
 Where the second-last transition is since $y \in \{-1, 1\}$ and the last transition since $0<|\frac{1}{1+e^{y \pmb{w} \pmb{x}}}| \leq 1$ and since it's given that $||\pmb{x}|| \leq B$. Hence, the parameter Liphschitzness of $\ell\left(\pmb{w}, (x_i, y_i)\right)$ is $B$.
 
-% TODO: Complete smoothness!
 
+For smoothness, we will use a known theorem by which a function is $\beta$ smooth if it is twice-continuously differentiable and it's hessian matrix satisfies:
+\begin{equation*}
+    \nabla^2_{\boldsymbol{w}} f(\boldsymbol{w}) \preceq \beta I
+\end{equation*}
+Let's calculate the hessian of $\ell(\boldsymbol{w}, (\boldsymbol{x}, y))$:
+
+\begin{equation*}
+    \nabla \ell(\boldsymbol{w}, (\boldsymbol{x}, y)) = \frac{-yexp(-y\boldsymbol{w}\cdot \boldsymbol{x})}{1+exp(-y\boldsymbol{w}\cdot \boldsymbol{x})} \boldsymbol{x}
+    = \frac{-y}{1+exp(y\boldsymbol{w}\cdot \boldsymbol{x})} \boldsymbol{x}
+\end{equation*}
+Where the last transition is obtained by multiplying and dividing by $exp(y\boldsymbol{w}\cdot \boldsymbol{x})$.
+\begin{equation*}
+    \begin{split}        
+        \nabla^2 \ell(\boldsymbol{w}, (\boldsymbol{x}, y)) &= \frac{y^2 exp(y\boldsymbol{w}\cdot \boldsymbol{x})}{(1+exp(y\boldsymbol{w}\cdot \boldsymbol{x}))^2} \boldsymbol{x} \cdot \boldsymbol{x}^T \\        
+        &= \frac{exp(y\boldsymbol{w}\cdot \boldsymbol{x})}{(1+exp(y\boldsymbol{w}\cdot \boldsymbol{x}))^2} \boldsymbol{x} \cdot \boldsymbol{x}^T 
+        \preceq \frac{exp(y\boldsymbol{w}\cdot \boldsymbol{x})}{(1+exp(y\boldsymbol{w}\cdot \boldsymbol{x}))^2} \cdot B^2 I
+    \end{split}
+\end{equation*}
+Where the second last transition is correct since $y^2 = (\pm 1)^2 = 1$, and the last transition since the matrix $\boldsymbol{x} \cdot \boldsymbol{x}^T$ has a single non-zero eigen value which equalls $||x||^2=B^2$.
+
+
+Now, let's annotate $exp(y\boldsymbol{w}\cdot \boldsymbol{x}) \triangleq m$, then:
+\begin{equation*}
+\nabla^2 \ell(m) \preceq B^2 \frac{m}{((1+m)^2)} I \triangleq B^2 f(m) I
+\end{equation*}
+In an attempt to upper-bound the term, let's see if the function $f(m)$ has a global maximum:
+
+\begin{equation*}
+    \frac{df(m)}{dm} = \frac{(1+m)^2 - 2m(1+m)}{(1+m)^4} 
+    = \frac{m^2 + 2m + 1 - 2m -2m^2}{(1+m)^4} = \frac{1- m^2}{(1+m)^4} = \frac{1-m}{(1+m)^3}
+\end{equation*}
+
+Thus $m=1$ is the sole-suspected global extremum of the function. plugging in values around it:
+\begin{equation*}
+    \begin{split}
+        f(1) &= \frac{1}{((1+1)^2)} = \frac{1}{4} \\
+        f(0) &= \frac{0}{((1+0)^2)} = 0 < f(1) \\
+        f(2) &= \frac{2}{((1+2)^2)} = \frac{2}{9} < f(1)
+    \end{split}
+\end{equation*}
+Hence $m=1$ is the global maximum of $f(m)$, and so:
+
+\begin{equation*}
+    \nabla^2 \ell(m) \preceq B^2 f(m) \preceq \frac{B^2}{4}
+\end{equation*}
+
+Concluding that $\ell(\boldsymbol{w}, (\boldsymbol{x}, y))$ is $\frac{B^2}{4}$ smooth.
