@@ -1,37 +1,3 @@
-\begin{algorithm}
-    \caption{K-Intevral-Union Classifier}\label{alg:cap}
-    \begin{algorithmic}
-        \Require k, $S\{(x_1, y_1), (x_2, y_2), ..., (x_m, y_m)\}$, $(x_i, y_i) \in \mathbb{R} \times \mathbb{R} \;  \forall i \in [1, m]$
-        \State $k_0 \gets 0$
-        \For{$i=1:m$}
-            \State $l_{nn} \gets \underset{l_j}{argmin} |l_j - x_i|, \; j\in[1, k_0]$
-            \State $u_{nn} \gets \underset{l_j}{argmin} |u_j - x_i|, \; j\in[1, k_0]$
-            \If{$y_i=1$}
-                \If {$k_0 == 0$}
-                    \State $l_1 \gets x_i$
-                    \State $u_1 \gets x_i$
-                \Else
-                    \If{$x_i < l_{nn}$}
-                        \State $l_{nn} \gets x_i$
-                    \EndIf
-                    \If{$x_i > u_{nn}$}
-                        \State $u_{nn} \gets x_i$
-                    \EndIf
-                \EndIf
-            \Else
-                \If{$k_0 > 0$ and $l_{nn} < x_i < u_{nn}$} \Comment{Interval should be split into 2}
-                    \State $k_0 \gets k_0 + 1$
-                    \State $x_{nn_l} \gets \underset{x_m}{argmin} |x_m - x_i| s.t x_m < x_i, \; m\in[1, i]$
-                    \State $x_{nn_u} \gets \underset{x_m}{argmin} |x_m - x_i| s.t x_m > x_i, \; m\in[1, i]$
-                    \State $u_{k_0} \gets x_{nn_l}$
-                    \State $l_{k_0} \gets x_{nn_u}$
-                \EndIf
-            \EndIf
-        \EndFor \\
-    \Return $\hat{l}, \hat{u}$
-    \end{algorithmic}
-\end{algorithm}
-
 First, let's analyze the false-negative errors (1s classified as 0s).
 Following the same logic of excercise 1, We define $I_j = [l_j, u_j] \;, j\in [1, k]$, and $(\hat{I}_m)_j = [\hat{l}, \hat{u}]$.
 In contrast to excercise 1, the defined sub-intervals for each j interval are now designed such that $D(\Delta l_j) = D(\Delta u_j) < \frac{\epsilon}{3k}$

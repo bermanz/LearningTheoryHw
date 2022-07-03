@@ -1,45 +1,25 @@
-\begin{algorithm}
-    \caption{Height Classifier}
-    \begin{algorithmic}
-        \Require $S\{(x_1, y_1), (x_2, y_2), ..., (x_m, y_m)\}$, $(x_i, y_i) \in \mathbb{R} \times \mathbb{R} \; \forall i \in [1, m]$
-        \State $\hat{l} \gets 1$
-        \State $\hat{u} \gets 0$
-        \For{$i=1:m$}
-            \If{$y_i=+$}
-                \If{$x_i < \hat{l}$}
-                    \State $\hat{l} \gets x_i$
-                \EndIf
-                \If{$x_i > \hat{u}$}
-                    \State $\hat{u} \gets x_i$
-                \EndIf
-            \EndIf
-        \EndFor \\
-    \Return $\hat{l}, \hat{u}$
-    \end{algorithmic}
-\end{algorithm}
-
-Let $I = [l, u]$, the true interval from which the '+' examples come, and $\hat{I}_m = [\hat{l}, \hat{u}]$, 
-the interval estimated by the algorithm given the sample $S$ of size $m$.
-We are looking for the sample complexity $m(\epsilon, \delta)$ such that $P(D(\Delta(I, \hat{I})) < \epsilon) > 1-\delta$ 
-or equivalently $P(D(\Delta(I, \hat{I})) > \epsilon) < \delta$.
-Assuming the length of $I$ is at least $\epsilon$, let's define the 2 sub-intervals $\Delta l = \hat{l} - l, \Delta u = u - \hat{u}$, 
-such that $D(\Delta l) = D(\Delta u) < \frac{\epsilon}{2}$ (for which inherently $D(\Delta(I, \hat{I})) < \epsilon$).
-The probability for non of the examples $(x_i, +) \sim D$ from the sample of m examples to fall within the interval $\Delta l$ is therefore:
+Let $I = [l, u]$, the true interval from which the '+' examples come.
+First, we note that if $D(I) < \epsilon$, we can w.l.o.g return the all negative hypothesis, which will have an error less than $\epsilon$.
+Otherwise, we can pick $\hat{l} > l$ and $\hat{u} < u$ such that $\hat{I}_m = [\hat{l}, \hat{u}]$ is the interval estimated by the algorithm given the sample $S$ of size $m$.
+To obtain $\hat{l}, \hat{u}$, we can use:
 \begin{equation*}
-    P(\underset{i=1:m}{\cap} x_i \notin \Delta l) = \prod_{i=1}^{m}P(x_i \notin \Delta l) 
-    = \prod_{i=1}^{m} 1-\frac{\epsilon}{2}= (1-\frac{\epsilon}{2})^m \leq e^{-\frac{\epsilon}{2}m}
+    \begin{split}
+        \hat{l} &= \underset{i\in[m]}{min} x_i \\
+        \hat{u} &= \underset{i\in[m]}{max} x_i
+    \end{split}
 \end{equation*}
-
-Where the 1st transition is since the examples are i.i.d. The same applies for $D(\Delta u)$ from symmetry.
-The event for the event $D(\Delta(I, \hat{I}) > \epsilon$ is achieved if no sample is drawn within any of the intervals $\Delta u \; \Delta l$.
-Therefore, and using the union bound:
+which is an ERM algorithm, as the returned interval $\hat{I}_m$ classifies all the sample correctly by design.
+To analyse the error obtained by this algorithm, let's define $\tilde{l} > l, \tilde{u} < u$ such that for a random sample $x_i \sim D$, $P(x_i \in [l, \tilde{l}]) = P(x_i \in [\tilde{u}, u]) = \frac{\epsilon}{2}$. In addition, let's define the event $E = \{\exists i,j \in [m] S.T x_i \in [l, \tilde{l}] \cap x_j \in [\tilde{u}, u]\}$.
+For auxiliary, we calculate the probability of the complement event, that is:
+$\bar{E} = \{\forall i \in [m] S.T x_i \notin [l, \tilde{l}] \cup x_i \notin [\tilde{u}, u]\}$.
+Should $\bar{E}$ occur, we can't guarantee a success of our hypothesis. Let's calculate the probability of the event's occurrence:
 \begin{equation*}
-    P(D(\Delta(I, \hat{I})) > \epsilon) = P\left(\left[\underset{i=1:m}{\cap} x_i \notin \Delta l\right] \cup \left[\underset{i=1:m}{\cap} x_i \notin \Delta u\right]\right) 
-    \leq P(\underset{i=1:m}{\cap} x_i \notin \Delta l) +  P(\underset{i=1:m}{\cap} x_i \notin \Delta u) \leq 2e^{-\frac{\epsilon}{2}m} \overset{!}{<} \delta
+    P(\bar{E}) \overset{\text{Union Bound}}{\leq} P(x_i \notin [l, \tilde{l}] \forall i \in [m]) + P(x_i [\tilde{u}, u] \forall i \in [m]) = 2 P(x_i \notin [l, \tilde{l}] \forall i \in [m]) = 2(1- \frac{\epsilon}{2})^2 \leq 2e^{-\frac{\epsilon}{2}m}
 \end{equation*}
-By taking the log of both sides and simplifying, we get the desired sample complexity:
+Now, instead of lower bounding the probability for success, let's upper-bound the probability for failure:
 \begin{equation*}
-    m(\epsilon, \delta) > \frac{2}{\epsilon} log(\frac{2}{\delta})
+    \begin{split}
+        P(err > \epsilon) &\leq P(\bar{E}) \leq 2e^{-\frac{\epsilon}{2}m} \overset{!}{<} \delta \\
+        m(\epsilon, \delta) &> \frac{2}{\epsilon} ln(\frac{\delta}{2})
+    \end{split}
 \end{equation*}
-
-
