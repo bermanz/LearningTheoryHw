@@ -1,44 +1,16 @@
-First, let's analyze the false-negative errors (1s classified as 0s).
-Following the same logic of excercise 1, We define $I_j = [l_j, u_j] \;, j\in [1, k]$, and $(\hat{I}_m)_j = [\hat{l}, \hat{u}]$.
-In contrast to excercise 1, the defined sub-intervals for each j interval are now designed such that $D(\Delta l_j) = D(\Delta u_j) < \frac{\epsilon}{3k}$
-(for which inherently $D(\Delta(I_j, \hat{I_j})) < \frac{\epsilon}{k}$). Since D is uniform, the probabilit for a sample not to fall within as $D(\Delta(I_j, \hat{I_j}))$ is the same $\forall j\in[1, k]$:
+Following a similar logic to ex1, We go over the positive examples from left to right. We set $l_1$ to be the first positive example, and $u_1$ the last consecutive positive example (before encountering a negative one). we continue until we cover all examples.
+To analyse the error and sample complexity, we first note that if $\sum_{i=1}^k I_{[l_i, u_i]} < \epsilon$, the all negative hypothesis already achieves the desired error rate w.p 1. Otherwise, some of the positive intervals $I_{[l_i, u_i]}$ are of size greater than $\frac{\epsilon}{2k}$, in which case we define the event:
+$E^+_i = \{\exists x^+_l,x^+_u \sim D S.T x^+_l \in [l_i, l_i + \frac{\epsilon}{4k}] \cap  x^+_u \in [u_i - \frac{\epsilon}{4k}, u_i]\}$
+In addition, forall negative intervals $I^-_i$ greater than $\frac{\epsilon}{4k}$, we define the event:
+$E^-_i = \{\exists x^- \sim D S.T x_- \in I^-_i\}$.
+Assuming the event $E = E^+_i \cap E^-_i$ occurs, the obtained error is:
 \begin{equation*}
-    P(\underset{i=1:m}{\cup} x_i \notin \Delta(I_j, \hat{I}_j)) = 2\prod_{i=1}^{m}P(x_i \notin \Delta l_j) 
-    = 2\prod_{i=1}^{m} 1-\frac{\epsilon}{3k}= 2(1-\frac{\epsilon}{3k})^m \leq 2e^{-\frac{\epsilon}{3k}m}
+    P(err(h_S) | E) \leq \sum_{i=1}^{k+1} D(I^-_i < \frac{\epsilon}{4k}) + \sum_{i=1}^k D([l_i, l_i + \frac{\epsilon}{4k}]) + D([u_i - \frac{\epsilon}{4k}, u_i]) = (k+1) \frac{\epsilon}{4k} + 2k\frac{\epsilon}{4k} \leq 2k\frac{\epsilon}{4k} + 2k\frac{\epsilon}{4k} = 4k\frac{\epsilon}{4k} = \epsilon
 \end{equation*}
-And using the union bound and the fact that there are at most k positive intervals:
+As requested. To find the sample complexity, let's upperbound the probability of failure:
 \begin{equation*}
-    P(err_{FN}) \leq P\left(\cup_{j=1}^{k} \left[ \cup_{i=1}^{m} x_i \notin \Delta(I_j, \hat{I}_j)) \right]\right) \leq \sum_{j=1}^{k} P\left(\cup_{i=1}^{m} x_i \notin \Delta(I_j, \hat{I}_j))\right) \leq 2ke^{-\frac{\epsilon}{3k}m}
-\end{equation*}
-
-
-Now, we'll move to analyzing the false-positive errors (0s classified as 1s). 
-A false-positive error occurs in case the algorithm miss-detects an interval gap between two adjacent positive intervals.
-
-Let's Denote by $\Delta I_{i}$ the interval gap between the i'th and i+1'th positive intervals.
-The probability for miss-detecting the interval gap $\Delta I_{i}$ is:
-\begin{equation*}
-    P(err_{FP_i}) = P(\underset{i=1:m}{\cup} x_i \notin \Delta I_{i})
-\end{equation*}
-There are 2 cases of interest:
-\begin{enumerate}
-    \item $\Delta I_{i} < \frac{\epsilon}{3k}$: Even if $\Delta I_{i}$ is mis-detected, it incurs a false-positive error that is $\frac{\epsilon}{3k} < $ (since D is uniform), regardless of m. Hence, even at the worst case of at-most k positive intervals and assuming non of the gaps between the intervals are detected (not really feasible, but it's only an upper bound), the total false-positive error will be $< \frac{\epsilon}{3}$, regardless of m.
-    \item $\Delta I_{i} > \frac{\epsilon}{3k}$: The probability for miss-detecting $\Delta I_{i} $ during training is:
-    \begin{equation*}
-        P(err_{FP_i}) = \prod_{i=1}^{m}P(x_i \notin \Delta I_{i}) 
-        = (1-\Delta I_{i})^m \leq (1-\frac{\epsilon}{3k})^m \leq e^{-\frac{\epsilon}{3k}m}
-    \end{equation*}
-    And by applying the union bound:
-    \begin{equation*}
-        P(err_{FP}) \leq P\left(\cup_{j=1}^{k} \left[ err_{FP_i} \right]\right) \leq \sum_{j=1}^{k} P\left(err_{FP_i}\right) \leq ke^{-\frac{\epsilon}{3k}m}
-    \end{equation*}
-\end{enumerate}
-
-To make the total error rate of the classifier greater than $\epsilon$, it's necessary that combined error probability of a false-negative and false positive error be greater than $\epsilon$:
-\begin{equation*}
-    P(err > \epsilon) = P(err_{FN} + err_{FP} > \epsilon) \leq 3ke^{-\frac{\epsilon}{3k}m} \overset{!}{<} \delta
-\end{equation*}
-by which we get the desired sample complexity:
-\begin{equation*}
-    m(\epsilon, \delta) > \frac{3k}{\epsilon} log(\frac{3k}{\delta})
+    \begin{split}
+        P(err(h_S) > \epsilon) &= P(err(h_S) | \bar{E}) \leq P(\cup_{i=1}^{k+1} \bar{E}^-_i, \bar{E}^+_i) \sum_{i=1}^{k+1}\leq P(\bar{E}^-_i + \bar{E}^+_i) \leq (k+1)(1-\frac{\epsilon}{4k})^m  + k(1-\frac{\epsilon}{4k})^m \leq 4k(1-\frac{\epsilon}{4k})^m \leq 4ke^{-m\frac{epsilon}{4k}} \overset{!}{<} \delta \\ 
+        m(\epsilon, \delta) &> \frac{4k}{\epsilon} ln(\frac{4k}{\delta})
+    \end{split}
 \end{equation*}
