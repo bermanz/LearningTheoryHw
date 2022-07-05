@@ -1,11 +1,25 @@
-Let $k=\lceil \log_{\delta_0}\delta \rceil$, then if we repeatedly sample an i.i.d set of size $m > m(\epsilon)$ and run algorithm A over the sampled set $k$ times, the probability that none of the k learned hypotheses achieves the required error rate is the product of the marginal probabilities, that is:
-
+First, we sample $k$ times from the underlying distribution of size $m>m(\frac{\epsilon}{2})$ and use A to find k $\delta_0$ weak-confidence hypotheses (denoted by $\hat{H}_k$). Denoting the event:
 \begin{equation*}
-    \mathbb{P}\left(\underset{i\in[k]}{\cap} err(h^A_{S_i}) > \underset{h\in\mathcal{H}}{min} err(h) + \epsilon\right) 
-     = \prod_{i\in[k]} \mathbb{P}\left(err(h^A_{S_i}) > \underset{h\in\mathcal{H}}{min} err(h) + \epsilon\right)
-     < \delta_0^k < \delta_0^{\log_{\delta_0}\delta} = \delta
+    E = \{\exists h_{S_i}^A \in \hat{H}_k s.t. err(h_{S_i}^A) < \underset{h\in \mathcal{H}}{min} err(h) + \frac{\epsilon}{2}\}
 \end{equation*}
 
-Which guarantees that the probability that some of the k learned hypotheses achieves the required error rate with probability of at least $1-\delta$.
+then:
+\begin{equation*}
+    \begin{split}
+        P(\bar{E}) &= P(\{\forall i\in [k], \; h_{S_i}^A \in \hat{H}_k,  err(h_{S_i}^A) > \underset{h\in \mathcal{H}}{min} err(h) + \epsilon \}) = \prod_{i=1}^k P(err(h_{S_i}^A) \\
+        &> \underset{h\in \mathcal{H}}{min} err(h) + \epsilon ) \leq \delta_0^k \overset{!}{<} \frac{\delta}{2} \\
+        k &> \frac{log(\delta/2)}{log(\delta_0)}
+    \end{split}
+\end{equation*}
 
-Thus, repeatedly sampling an i.i.d set of size $m > m(\epsilon)$ and run algorithm A over the sampled set $k=\lceil \log_{\delta_0}\delta \rceil$ times and finally choosing the E.R.M amongst the learned set of hypotheses is a construction of a learning algorithm that satisfies the requirements.
+In other words, if we use A $k \geq \frac{log(\delta/2)}{log(\delta_0)}$ times, we end up with a family of k weak-confidence hypotheses out of which at least one is more than $\frac{\epsilon}{2}$ accurate w.p. at least $1-\frac{\delta}{2}$.
+
+What's left is to design a process to find which of the k hypotheses is the desired one. For that, we sample yet again from D, this time with a size $m > m(\frac{\epsilon}{2}, \frac{\delta}{2}) = O\left(\frac{4k log\frac{2}{\delta}}{\epsilon^2}\right)$, and use it to detect the desired hypothesis by applying a simple ERM rule over the set $\hat{H}$. This is guaranteed to work since every finite hypothesis class is agnostic PAC learnable with sample complexity defined by the desired accuracy, probability and the VC-dimension of the hypotheses class (which in the case of a finite hypotheses class is upper bounded by the log of it's size). Thus, w.p. at least $1-\frac{\delta}{2}$ we are guaranteed to find:
+\begin{equation*}
+    err(h) \leq \underset{h_S^A \in \hat{H}_k}{min} err(h_S^A) + \frac{\epsilon}{2}
+\end{equation*}
+
+Thus, using the union bound, and a total sample of size $m > O(km_\mathcal{H}(\frac{\epsilon}{2}) + \frac{4k log\frac{2}{\delta}}{\epsilon^2})$, we get w.p. at least $1-\delta$:
+\begin{equation*}
+    err(h) \leq \underset{h_S^A \in \hat{H}_k}{min} err(h_S^A) + \frac{\epsilon}{2} \leq \underset{h\in \mathcal{H}}{min} err(h) + \frac{\epsilon}{2}
+\end{equation*}
