@@ -1,13 +1,45 @@
 \subsection*{1}
-Assuming by contradiction that a class $\mathcal{H}$ that is PAC learnable has an infinite VC dimension, any subset $A \in \mathcal{X}$ of size d can be shattered by $\mathcal{H}$, where $\mathcal{X}$ is the space of all different subsets of size d. Since $A$ is shuttered by $\mathcal{H}$:
+Since the VC dimension of $\mathcal{H}$ is infinite, any finite set of points $C \subseteq \mathcal{X} $ of size d is shuttered by $\mathcal{H}$. Let $H \subset \mathcal{H}$ be the subset of hypotheses that shutter C, and pick $h^* \sim Unif(H)$. Now, we define a distribution $D_C: x_i \sim Unif(C)$, and sample a set $S$ of m points from it. For any algorithm A trained over the set $S$ and returns the hypothesis $h_S^A$, we defined the generalization error:
 \begin{equation*}
-    |\mathcal{H}| = \mathcal{Y}^|A| = |\mathcal{Y}|^d \Rightarrow H = \mathcal{Y}^\mathcal{X}
+    err(h_S^A) = P_{D_C}(h_S^A(x) \neq h^*(x)) = \underset{h^*, S, x}{\mathbb{E}} \ell_{0,1}(h_S^A(x),h^*(x))
 \end{equation*}
-Where $\mathcal{Y}$ is the class of all possible classification labels.
+Using the law of total probability, we get:
+\begin{equation*}
+    \begin{split}        
+        \underset{h^*, S, x_i}{\mathbb{E}} \ell_{0,1}(h_S^A(x_i),h^*(x_i)) &= \underset{h^* \sim Unif(H)}{\mathbb{E}} \left[\underset{S \sim Unif(C^m)}{\mathbb{E}} \left[\underset{x \sim Unif(C)}{\mathbb{E}} \left[\ell_{0,1}(h_S^A(x),h^*(x)) | S \right] | h^* \right] \right] \\
+         &= \underset{h^* \sim Unif(H)}{\mathbb{E}} \left[\underset{S \sim Unif(D_C^m)}{\mathbb{E}}  \left[ err(h_S^A) | h^* \right] \right]
+    \end{split}
+\end{equation*}
+Now, assuming we sample a point $x \sim D_C$ such that $x \notin S$ (i.e. the sample S doesn't contain all the points shuttered by H), and annotate this event with $E$. As the subset H shutters the set C, any point $x\in C$ can be arbitrarily classified by any hypothesis $h \in H$ (and particularly $h^*\in H$). Therefore, the learned hypothesis $h_S^A$ will be no better than guessing $x$'s label, that is:
+\begin{equation*}
+    err(h_S^A) | E = \frac{1}{2}
+\end{equation*}
+as S is a sample of m points from a distribution over d points (assuming $m \leq d$), we have $P(E) \geq 1 - \frac{m}{d}$ (the inequality since m might containt duplicate points). Thus:
 
-This is precisely the setting that we saw in example 3.1 from the lectures, where it was shown that any learning algorithm will fail for some underlying distribution given less than $\frac{\log (|\mathcal{H}|)}{8} = \log(|\mathcal{Y}|) \cdot \frac{d}{8}$ training samples, which is proportional to d.
+\begin{equation*}
+    err(h_S^A) | h^*  = err(h_S^A) | h^*, E \cdot P(E) + err(h_S^A) | h^*, \bar{E} \cdot P(\bar{E}) = err(h_S^A) | h^*, E \cdot P(E) \geq \frac{1}{2} (1-\frac{m}{d})
+\end{equation*}
+Where the 2nd last transition is since in the event of $\bar{E}$, the sample x appeared in S, and hence the learned hypothesis will predict it with 0 error. Thus:
+\begin{equation*}
+    \underset{h^* \sim Unif(H)}{\mathbb{E}} \left[\underset{S \sim Unif(D_C^m)}{\mathbb{E}}  \left[ err(h_S^A) | h^* \right] \right] \geq \frac{1}{2} (1-\frac{m}{d})
+\end{equation*}
+Now, if this is true in expectation over $h^* \sim Unif(H)$, there must exist some $h_0 \in H$ such that:
+\begin{equation*}    
+    \underset{S \sim Unif(D_C^m)}{\mathbb{E}}  \left[ err_{h_0}(h_S^A) \right] \geq \frac{1}{2} (1-\frac{m}{d})
+\end{equation*}
+finally, we can use the markov inequality for $X = 1 - err_{h_0}(h_S^A)$ and $\alpha = \frac{3}{4}$:
+\begin{equation*}
+    P(err_{h_0}(h_S^A) > \frac{1}{4}) = 1 - P(err_{h_0}(h_S^A) < \frac{1}{4}) = 1 - P(X > \frac{3}{4}) \geq 1 - \frac{4}{3}(\frac{1}{2} + \frac{m}{d}) = \frac{1}{3} - \frac{4m}{3d}
+\end{equation*}
+And since $\mathcal{H}$ is infinite and thus this holds for any finite d, w.l.o.g it holds for $d=16m$, for which:
 
-As this argument holds $\forall d \in \mathbb{N}$ (since the VC dimension of $\mathcal{H}$ is infinite), taking $d\rightarrow \infty$, an algorithm will need more than $O(\frac{d}{8}) \rightarrow \infty$ training samples to succeed, which is obviously not feasible, in contradiction to the assumption that $\mathcal{H}$ can have an infinite VC dimension.
+\begin{equation*}
+    P(err_{h_0}(h_S^A) > \frac{1}{4}) \geq \frac{1}{3} - \frac{1}{12} = \frac{1}{4}
+\end{equation*}
+
+However, since the hypothesis class $\mathcal{H}$ is PAC learnable, there exists $m > m(\frac{1}{4}, \frac{1}{6})$ and a learning algorithm A such that $P(err(h_S^A) > \frac{1}{4}) < \frac{1}{6}$.
+This contradicts the assumption that the VC dimension of a PAC learnable class can be infinite.
+
 
 \subsection*{2}
 By definition, a class $\mathcal{H}$ has the uniform convergence property if $\forall h \in \mathcal{H}$ and $\forall \epsilon, \delta \in (0, 1)$ there exists a sample of size $m \geq m(\epsilon, \delta)$ such that for any D over $\mathcal{X}$ we have:
