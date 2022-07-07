@@ -15,9 +15,9 @@
     Following subsection (1), we have:
     \begin{equation*}
         \begin{split}            
-            & \mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S}) = \frac{\lambda}{2}||\boldsymbol{w}_{\lambda, S}|| 
+            & \mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S}) = \frac{\lambda}{2}||\boldsymbol{w}_{\lambda, S}||^2 
             + \frac{1}{m} \sum_{i=1}^{m} max\{0, 1-y \boldsymbol{w}_{\lambda, S} \cdot \boldsymbol{x}\} \leq 1 \\
-            \Rightarrow & \frac{\lambda}{2}||\boldsymbol{w}_{\lambda, S}|| \leq 1 - \frac{1}{m} \sum_{i=1}^{m} max\{0, 1-y \boldsymbol{w}_{\lambda, S} \cdot \boldsymbol{x}\} \leq 1
+            \Rightarrow & \frac{\lambda}{2}||\boldsymbol{w}_{\lambda, S}||^2 \leq 1 - \frac{1}{m} \sum_{i=1}^{m} max\{0, 1-y \boldsymbol{w}_{\lambda, S} \cdot \boldsymbol{x}\} \leq 1
         \end{split}
     \end{equation*}
     Where the last transition is since $max\{0, 1-y \boldsymbol{w}_{\lambda, S} \cdot \boldsymbol{x}\} \geq 0 \; \forall y, \boldsymbol{w}_{\lambda, S}, \boldsymbol{x}$. The desired result is obtained by multiplying both sides by $\frac{2}{\lambda}$ (which doesn't alter the inequality's direction since $\lambda > 0$) and taking the square root (which also doesn't change the inequality's direction since it's a monotonically increasing function).
@@ -54,50 +54,60 @@
 
 \subsection*{c}
 \begin{proof}
-    First, we restrict the domain of $\boldsymbol{w}$ to the ball of radius $B=\sqrt{\frac{2}{\lambda}}$. now, let's find the supremum and Liphschitzness of $\ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}, y))$|:
+    First, we claim that $\forall \boldsymbol{w} \in \mathbb{R}^d$, $\mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S}) \leq \mathcal{L}_{\lambda, S}(\boldsymbol{w})$ by the definition of $\boldsymbol{w}_{\lambda, S}$. Hence, it's also true for $\boldsymbol{w}^* = \underset{||\boldsymbol{w}||\leq 1}{argmin} \mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S})$. we thus conclude that:
+
     \begin{equation*}
-        |\ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}, y))| \leq |1-y\boldsymbol{w}\cdot\boldsymbol{x}| \leq |1 + \boldsymbol{w}\cdot \frac{\boldsymbol{w}}{||\boldsymbol{w}||}| = 1 + ||\boldsymbol{w}|| \leq 1+\sqrt{\frac{2}{\lambda}} \triangleq c
+        \begin{split}            
+            \frac{1}{m} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}_{\lambda, S}; \boldsymbol{x}, y) 
+            &\leq \mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S}) 
+            \leq \mathcal{L}_{\lambda, S}(\boldsymbol{w}^*) \\
+            &= \underset{||\boldsymbol{w}||\leq 1}{min} \frac{\lambda}{2} ||\boldsymbol{w}||^2 + \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y) \\
+            &\leq \frac{\lambda}{2} + \underset{||\boldsymbol{w}||\leq 1}{min} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y)
+        \end{split}
     \end{equation*}
+    Where the last transition holds since $||\boldsymbol{w}^*|| \leq 1$ by the section's assumption. Using this result, we can say that:
+    \begin{equation*}
+        \begin{split}            
+            \mathcal{L}(\boldsymbol{w}_{\lambda, S}) - \left(\frac{\lambda}{2} + \underset{||\boldsymbol{w}||\leq 1}{min} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y)\right) 
+            &\leq \mathcal{L}_D(\boldsymbol{w}_{\lambda, S}) - \frac{1}{m} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}_{\lambda, S}; \boldsymbol{x}, y) \\
+            &= \mathcal{L}_D(\boldsymbol{w}_{\lambda, S}) - \mathcal{L}_S(\boldsymbol{w}_{\lambda, S})
+        \end{split}
+    \end{equation*}
+
+    Moving forward, we restrict the domain of $\boldsymbol{w}$ to the ball of radius $B=\sqrt{\frac{2}{\lambda}}$. now, let's find the supremum and Liphschitzness of $\ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}, y))$|:
+    \begin{equation*}
+        |\ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}, y))| \leq |1-y\boldsymbol{w}\cdot\boldsymbol{x}| \leq |1 + \boldsymbol{w}\cdot \frac{\boldsymbol{w}}{||\boldsymbol{w}||}| = 1 + ||\boldsymbol{w}|| \leq 1+\sqrt{\frac{2}{\lambda}} = O(\frac{1}{\sqrt{\lambda}}) \triangleq c
+    \end{equation*}
+    Where the 2nd last transition assumes $\lambda \leq 1$ (which we'll require in the next sections).
     \begin{equation*}
         |\nabla \ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}, y))| \leq |\nabla (1-y\boldsymbol{w}\cdot\boldsymbol{x})| = |-y\boldsymbol{x}| \leq ||\boldsymbol{x}|| \leq 1 \triangleq \rho
     \end{equation*}
     Following the proven theorem from section 4, we have:
     \begin{equation*}
-        \underset{\boldsymbol{w} \in K}{sup} \mathcal{L}_D(\boldsymbol{w}) - \mathcal{L}_S(\boldsymbol{w}) \leq 2 \sqrt{\frac{2}{\lambda m}} + O\left((1+\sqrt{\frac{2}{\lambda}}) \sqrt{\frac{ln 1/\delta}{m}} \right)
-        = O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right)
+        \underset{||\boldsymbol{w}|| \leq B}{sup} \mathcal{L}_D(\boldsymbol{w}) - \mathcal{L}_S(\boldsymbol{w}) \leq 2 \sqrt{\frac{2}{\lambda m}} + O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right)
     \end{equation*}
-    Where the last transition is since we can assume $\lambda \leq 1$, and since for typical (small enough) values of $\delta$, $ln 1/\delta >> 1$.
 
-    Now, following the results from subsection 1, we know that:
+    Now, combining everything so far, we have:
     \begin{equation*}
-        \mathcal{L}_{\lambda, S}(\boldsymbol{w_{\lambda, S}}) \leq \underset{||\boldsymbol{w}|| \leq 1}{min} \mathcal{L}_{\lambda, S}(\boldsymbol{w})
-    \end{equation*}
-    Since $w_{\lambda, S}$ is the unconstrained minimizer of $\mathcal{L}_{\lambda, S}(\boldsymbol{w})$. Hence:
-    \begin{equation*}
-        \begin{split}            
-            \mathcal{L}_{\lambda, S}(\boldsymbol{w_{\lambda, S}}) &\leq \underset{||\boldsymbol{w}|| \leq 1}{min} \mathcal{L}_{\lambda, S}(\boldsymbol{w})
-            = \underset{||\boldsymbol{w}\leq 1}{min} \frac{\lambda}{2} ||\boldsymbol{w}||^2 + \frac{1}{m} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}_i, y_i)) \\
-            &\leq \frac{\lambda}{2} + \underset{||\boldsymbol{w}|| \leq 1}{min} \frac{1}{m} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}_i, y_i))
+        \begin{split}      
+            \mathcal{L}(\boldsymbol{w}_{\lambda, S}) - \left(\frac{\lambda}{2} + \underset{||\boldsymbol{w}||\leq 1}{min} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y)\right)
+            &\leq \mathcal{L}_D(\boldsymbol{w}_{\lambda, S}) - \mathcal{L}_S(\boldsymbol{w}_{\lambda, S}) \\
+            &\leq \underset{||\boldsymbol{w}|| \leq B}{sup} \mathcal{L}_D(\boldsymbol{w}) - \mathcal{L}_S(\boldsymbol{w}) \leq 2 \sqrt{\frac{2}{\lambda m}} + O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right)
         \end{split}
     \end{equation*}
-    Thence:
+
+    And therefore:
     \begin{equation*}
-        \begin{split}
-            \mathcal{L}_D(\boldsymbol{w_{\lambda, S}}) - \left(\frac{\lambda}{2} + \underset{||\boldsymbol{w}|| \leq 1}{min} \frac{1}{m} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}_i, y_i))\right) 
-            &\leq \mathcal{L}_D(\boldsymbol{w_{\lambda, S}}) - \mathcal{L}_{\lambda, S}(\boldsymbol{w_{\lambda, S}}) \\
-            &= \mathcal{L}_D(\boldsymbol{w_{\lambda, S}}) - \left(1 + \mathcal{L}_S(\boldsymbol{w_{\lambda, S}})\right) \\
-            &\leq \underset{\boldsymbol{w} \in K}{sup} \mathcal{L}_D(\boldsymbol{w}) - \mathcal{L}_S(\boldsymbol{w}) - 1 \\
-            &\leq O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right) - 1 = O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right)
+        \begin{split}      
+            \mathcal{L}(\boldsymbol{w}_{\lambda, S}) &\leq \frac{\lambda}{2} + \underset{||\boldsymbol{w}||\leq 1}{min} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y) + 2 \sqrt{\frac{2}{\lambda m}} + O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right) \\
+            &= \underset{||\boldsymbol{w}||\leq 1}{min} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y) + O\left(\lambda + \left(1 + \sqrt{ln 1/\delta}\right)\sqrt{\frac{1}{\lambda m}} \right) \\
+            &= \underset{||\boldsymbol{w}||\leq 1}{min} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y) + O\left(\lambda + \sqrt{\frac{ln 1/\delta}{\lambda m}} \right)
         \end{split}
     \end{equation*}
-    And by adding $\frac{\lambda}{2}$ to both sides, we obtain:
-    \begin{equation*}
-        \mathcal{L}_D(\boldsymbol{w_{\lambda, S}}) - \underset{||\boldsymbol{w}|| \leq 1}{min} \frac{1}{m} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}_i, y_i)) \leq \frac{\lambda}{2} + O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right) = O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} + \lambda \right)
-    \end{equation*}    
-\end{proof}
+    Where the last transition holds since typically $\delta << 1$.
 
 \subsection*{d}
-If a such a $||\boldsymbol{w*}||$ exists, then $\ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}_i, y_i)) = 0 \forall x_i, y_i \in D$, in which case the result from subsection c collapses to:
+If a such a $||\boldsymbol{w*}||$ exists, then $\forall x_i, y_i \in D, \; \ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}_i, y_i)) = 0 $. As this is the minimum of the empirical loss, the result from subsection c collapses to:
 
 \begin{equation*}
     \mathcal{L}_D(\boldsymbol{w_{\lambda, S}}) \leq O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} + \lambda \right)
@@ -107,11 +117,29 @@ Based on the result from subsection b, this also means that:
 \begin{equation*}
     err(\boldsymbol{w_{\lambda, S}}) \leq O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} + \lambda \right)
 \end{equation*}
-Now, we damand that the RHS is less or equal $\epsilon$, and solve for m as function of $\epsilon, \delta$ and $\lambda$:
+Now, we damand that the RHS is less or equal $\epsilon$ by minimizing the O term.
+We note that:
+\begin{equation*}
+    \begin{split}
+        \frac{d}{d\lambda} \left(\sqrt{\frac{ln 1/\delta}{\lambda m}} + \lambda\right) &= -\frac{1}{2} (\frac{ln 1/\delta}{\lambda m})^{-\frac{3}{2}} + 1 \\
+        \frac{d^2}{d\lambda^2} \left(\sqrt{\frac{ln 1/\delta}{\lambda m}} + \lambda\right) &= 
+        \frac{3}{4} (\frac{ln 1/\delta}{\lambda m})^{-\frac{5}{2}} > 0 \; \forall \epsilon, \delta > 0, \lambda \geq 0
+    \end{split}
+\end{equation*}
+Hence, the function $f(m, \lambda) = \sqrt{\frac{ln 1/\delta}{\lambda m}} + \lambda$ is convex $\forall \lambda \geq 0$, and since $f(\lambda=0), f(\lambda \rightarrow \infty) \rightarrow \infty$, it's extremum is the global minimizer:
 
 \begin{equation*}
-    \sqrt{\frac{ln 1/\delta}{\lambda m}} + \lambda \overset{!}{\leq} \epsilon 
-    \Rightarrow \frac{ln 1/\delta}{\lambda m} \leq (\epsilon-\lambda)^2
-    \Rightarrow m \geq \frac{ln 1/\delta}{\lambda(\lambda-\epsilon)^2}
+    \begin{split}        
+        \frac{d}{d\lambda} \left(\sqrt{\frac{ln 1/\delta}{\lambda m}} + \lambda\right) &= -\frac{1}{2} (\frac{ln 1/\delta}{\lambda m})^{-\frac{3}{2}} + 1 \overset{!}{=} 0 \\
+        \lambda^* &= \sqrt[3]{\frac{ln 1/\delta}{4\lambda m}} = O(\sqrt[3]{\frac{ln 1/\delta}{\lambda m}})
+    \end{split}
 \end{equation*}
-Where we can set $\lambda$ to any arbitrary value of choice.
+Plugging $\lambda^*$ and by denoting $a(m) = \frac{ln 1/\delta}{m}$, we have:
+\begin{equation*}
+    f(m, \lambda^*) = a(m)^\frac{1}{3} + a(m)^\frac{1}{2} a(m)^{-\frac{1}{6}} = 2a(m)^\frac{1}{3} = O(a(m)^\frac{1}{3}) = O(\sqrt[3]{\frac{ln 1/\delta}{\lambda m}})
+\end{equation*}
+Hence:
+\begin{equation*}
+    err(\boldsymbol{w_{\lambda, S}}) \leq O(\sqrt[3]{\frac{ln 1/\delta}{m}}) \overset{!}{=} O(\epsilon)
+\end{equation*}
+Thus by selecting $m = O\left(\frac{ln 1/\delta}{\epsilon^3}\right)$, and thus $\lambda* = O(\epsilon)$, we get the desired result.

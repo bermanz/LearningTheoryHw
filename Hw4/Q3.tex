@@ -2,94 +2,72 @@
 \begin{proof}    
     Let $h(\pmb{w}) = \frac{1}{m}\sum_{i=1}^m \ell\left(\pmb{w}, (x_i, y_i)\right)$. Since $\ell\left(\pmb{w}, (x, y)\right)$ is convex, so is $h(\pmb{w})$ (as an affine combination of convex functions), and hence:
     \begin{equation*}
-        h(\pmb{w}) - h(\pmb{v}) \geq \nabla h(\pmb{v})^T \cdot (\pmb{w}-\pmb{v})
+        h(\pmb{w}) - h(\pmb{v}) \geq <\nabla h(\pmb{v}), (\pmb{w}-\pmb{v})>
     \end{equation*}
     
-    In addition, we note that:
-    
+    Using this notation:
+    \begin{equation*}
+        \nabla F_\lambda(\pmb{w}) = \lambda \pmb{w} + \nabla h(\pmb{w})
+    \end{equation*}
+
+    In addition, we note that:    
     \begin{equation*}
         \begin{split}            
-            ||\pmb{w}||^2 - ||\pmb{v}||^2 &= 2<\pmb{w}, \pmb{v}> - 2||\pmb{v}||^2 + ||\pmb{w} - \pmb{v}||^2 \\
-            &= 2\left(\pmb{v}^T \cdot (\pmb{w} - \pmb{v}) \right) + ||\pmb{w} - \pmb{v}||^2 \\
-            &= \nabla(||\pmb{v}||^2)^T \cdot (\pmb{w} - \pmb{v}) + ||\pmb{w} - \pmb{v}||^2
+            ||\pmb{w}||^2 - ||\pmb{v}||^2 &= <\pmb{w} + \pmb{v}, \pmb{w} - \pmb{v}> = <\pmb{w} - \pmb{v}, \pmb{w} - \pmb{v}> + 2 <\pmb{v}, \pmb{w} - \pmb{v}> \\
+            &= ||\pmb{w} - \pmb{v}||^2 + 2 <\pmb{v}, \pmb{w} - \pmb{v}>
         \end{split}
     \end{equation*}
     
     Plugging all in, we have:
     \begin{equation*}
         \begin{split}
-            F_\lambda(\pmb{w}) - F_\lambda(\pmb{v}) &= \frac{\lambda}{2}(||\pmb{w}||^2 - ||\pmb{v}||^2) + h(\pmb{w}) - h(\pmb{v}) \\ 
-            &= \frac{\lambda}{2}\left(\nabla(||\pmb{v}||^2)^T \cdot (\pmb{w} - \pmb{v}) + ||\pmb{w} - \pmb{v}||^2\right) + h(\pmb{w}) - h(\pmb{v}) \\
-            &\geq \frac{\lambda}{2}\left(\nabla(||\pmb{v}||^2)^T \cdot (\pmb{w} - \pmb{v}) + ||\pmb{w} - \pmb{v}||^2\right) + \nabla h(\pmb{v})^T \cdot (\pmb{w}-\pmb{v}) \\
-            &= \left(\nabla(\frac{\lambda}{2}||\pmb{v}||^2 + h(\pmb{v}))^T\right) \cdot (\pmb{w} - \pmb{v}) + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2 \\
-            &= \nabla F_\lambda(\pmb{v})^T \cdot(\pmb{w} - \pmb{v}) + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2
+            F_\lambda(\pmb{w}) - F_\lambda(\pmb{v}) &= \frac{\lambda}{2}(||\pmb{w} - \pmb{v}||^2 + 2 <\pmb{v}, \pmb{w} - \pmb{v}>) + h(\pmb{w}) - h(\pmb{v}) \\ 
+            &=  \lambda <\pmb{v}, \pmb{w} - \pmb{v}> + h(\pmb{w}) - h(\pmb{v}) + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2 \\
+            &\geq <\lambda\pmb{v}, \pmb{w} - \pmb{v}> + <\nabla h(\pmb{v}), (\pmb{w}-\pmb{v})> + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2 \\
+            &= <\lambda\pmb{v} + \nabla h(\pmb{v}), \pmb{w} - \pmb{v}> + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2 \\
+            &= <F_\lambda(\pmb{v}), \pmb{w} - \pmb{v}> + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2 \\
+            &= F_\lambda(\pmb{v})^T (\pmb{w} - \pmb{v}) + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2
         \end{split}
-    \end{equation*}
-    
-    So we conclude that:
-    \begin{equation*}
-        F_\lambda(\pmb{w}) \geq F_\lambda(\pmb{v}) + \nabla F_\lambda(\pmb{v})^T \cdot(\pmb{w} - \pmb{v}) + \frac{\lambda}{2}||\pmb{w} - \pmb{v}||^2
     \end{equation*}
     Hence $F_\lambda(\pmb{w})$ is $\lambda$ strongly convex
 \end{proof}
 
 \subsection*{b}
-First, let's calculate the gradient of $\ell\left(\pmb{w}, (x_i, y_i)\right)$:
-\begin{equation*}
-    \nabla \ell\left(\pmb{w}, (x_i, y_i)\right) = -y \frac{e^{-y \pmb{w} \pmb{x}}}{1+e^{-y \pmb{w} \pmb{x}}} \pmb{x}
-    = \frac{-y}{1+e^{y \pmb{w} \pmb{x}}} \pmb{x}
-\end{equation*}
-Where the last transition is obtained by multiplying and dividing by $e^{y \pmb{w} \pmb{x}}$, which is non-zero for any possible combination of $y, \pmb{w},\pmb{x}$. Taking the standard norm of the gradient:
-\begin{equation*}
-    ||\nabla \ell\left(\pmb{w}, (x_i, y_i)\right)|| = ||\frac{-y}{1+e^{y \pmb{w} \pmb{x}}} \pmb{x}|| = |\frac{-y}{1+e^{y \pmb{w} \pmb{x}}}| ||\pmb{x}|| = |\frac{1}{1+e^{y \pmb{w} \pmb{x}}}| ||\pmb{x}|| \leq 1 \cdot B = B
-\end{equation*}
-Where the second-last transition is since $y \in \{-1, 1\}$ and the last transition since $0<|\frac{1}{1+e^{y \pmb{w} \pmb{x}}}| \leq 1$ and since it's given that $||\pmb{x}|| \leq B$. Hence, the parameter Liphschitzness of $\ell\left(\pmb{w}, (x_i, y_i)\right)$ is $B$.
+Let $h(a) = log(1 + e^a)$. We'll first show that $h(a)$ is Lipschitz bounded, convex and find it's smoothness:
 
-
-For smoothness, we will use a known theorem by which a function is $\beta$ smooth if it is twice-continuously differentiable and it's hessian matrix satisfies:
+\subsubsection*{Lipshitzness}
 \begin{equation*}
-    \nabla^2_{\boldsymbol{w}} f(\boldsymbol{w}) \preceq \beta I
+    \frac{dh(a)}{da} = \frac{e^a}{1+e^a}  = \frac{1}{1+e^{-a}} \Rightarrow |\frac{dh(a)}{da}| \leq 1
 \end{equation*}
-Let's calculate the hessian of $\ell(\boldsymbol{w}, (\boldsymbol{x}, y))$:
+Since $e^{-a} \geq 0, \; \forall a\in \mathbb{R}$, so $h(a)$ is 1-Lipschitz
 
+\subsubsection*{Convexity}
 \begin{equation*}
-    \nabla \ell(\boldsymbol{w}, (\boldsymbol{x}, y)) = \frac{-yexp(-y\boldsymbol{w}\cdot \boldsymbol{x})}{1+exp(-y\boldsymbol{w}\cdot \boldsymbol{x})} \boldsymbol{x}
-    = \frac{-y}{1+exp(y\boldsymbol{w}\cdot \boldsymbol{x})} \boldsymbol{x}
+    \frac{d^2h(a)}{da^2} = \frac{d^2}{da^2} \left(\frac{1}{1+e^{-a}}\right) = -\frac{-e^{-a}}{(1+e^{-a})^2} = 
+    \frac{1}{e^{-a}(1+e^{-a})^2}
 \end{equation*}
-Where the last transition is obtained by multiplying and dividing by $exp(y\boldsymbol{w}\cdot \boldsymbol{x})$.
-\begin{equation*}
-    \begin{split}        
-        \nabla^2 \ell(\boldsymbol{w}, (\boldsymbol{x}, y)) &= \frac{y^2 exp(y\boldsymbol{w}\cdot \boldsymbol{x})}{(1+exp(y\boldsymbol{w}\cdot \boldsymbol{x}))^2} \boldsymbol{x} \cdot \boldsymbol{x}^T \\        
-        &= \frac{exp(y\boldsymbol{w}\cdot \boldsymbol{x})}{(1+exp(y\boldsymbol{w}\cdot \boldsymbol{x}))^2} \boldsymbol{x} \cdot \boldsymbol{x}^T 
-        \preceq \frac{exp(y\boldsymbol{w}\cdot \boldsymbol{x})}{(1+exp(y\boldsymbol{w}\cdot \boldsymbol{x}))^2} \cdot B^2 I
-    \end{split}
-\end{equation*}
-Where the second last transition is correct since $y^2 = (\pm 1)^2 = 1$, and the last transition since the matrix $\boldsymbol{x} \cdot \boldsymbol{x}^T$ has a single non-zero eigen value which equalls $||x||^2=B^2$.
+And as the denominator is positive $\forall a\in \mathbb{R}$, we have $|\frac{d^2h(a)}{da^2}| > 0, \; \forall a\in \mathbb{R}$, meaning that $h(a)$ is convex wherever it's defined.
 
-
-Now, let's annotate $exp(y\boldsymbol{w}\cdot \boldsymbol{x}) \triangleq m$, then:
-\begin{equation*}
-\nabla^2 \ell(m) \preceq B^2 \frac{m}{((1+m)^2)} I \triangleq B^2 f(m) I
-\end{equation*}
-In an attempt to upper-bound the term, let's see if the function $f(m)$ has a global maximum:
-
-\begin{equation*}
-    \frac{df(m)}{dm} = \frac{(1+m)^2 - 2m(1+m)}{(1+m)^4} 
-    = \frac{m^2 + 2m + 1 - 2m -2m^2}{(1+m)^4} = \frac{1- m^2}{(1+m)^4} = \frac{1-m}{(1+m)^3}
-\end{equation*}
-
-Thus $m=1$ is the sole-suspected global extremum of the function. plugging in values around it:
+\subsubsection*{smoothness}
+First, we find the minimum of the 2nd derivative's denominator:
 \begin{equation*}
     \begin{split}
-        f(1) &= \frac{1}{((1+1)^2)} = \frac{1}{4} \\
-        f(0) &= \frac{0}{((1+0)^2)} = 0 < f(1) \\
-        f(2) &= \frac{2}{((1+2)^2)} = \frac{2}{9} < f(1)
+        e^{-a}(1+e^{-a})^2 &= e^{-a} + 2 + e^a \\
+        \frac{d}{da}(e^{-a}(1+e^{-a})^2) &= e^a - e_{-a} \overset{!}{=} 0 \\
+        &\Rightarrow \underset{a\in \mathbb{R}}{argmin} (e^{-a}(1+e^{-a})^2) = 0 \\
+        &\Rightarrow \underset{a\in \mathbb{R}}{min} (e^{-a}(1+e^{-a})^2) = 4
     \end{split}
 \end{equation*}
-Hence $m=1$ is the global maximum of $f(m)$, and so:
-
+This is infact the global minimum of the denominator since it's the only extremum, and the denominator goes to infinity whenever $a\rightarrow \pm \infty$. Hence:
 \begin{equation*}
-    \nabla^2 \ell(m) \preceq B^2 f(m) \preceq \frac{B^2}{4}
+    |\frac{d^2h(a)}{da^2}| = |\frac{1}{e^{-a}(1+e^{-a})^2}| \leq \frac{1}{4}
 \end{equation*}
+And so by the mean value theorem, $\frac{dh(a)}{da}$ is $\frac{1}{4}$ Lipschitz, concluding that $h(a)$ is $\frac{1}{4}$ smooth.
 
-Concluding that $\ell(\boldsymbol{w}, (\boldsymbol{x}, y))$ is $\frac{B^2}{4}$ smooth.
+Now, using two theories stating that if $f$ is a function with Lipschitzness $\rho$ / smooth $\beta$ and  $g$ is an affine function of $\pmb{x}$ ($g(<\pmb{w}, \pmb{x}> + b)$) , then the Lipschitzness / smoothness of $f(g(<\pmb{w}, \pmb{x}> + b))$ is $\rho ||x||_2$ / $\beta ||x||^2_2$ respectively, we get:
+\begin{equation*}
+    \begin{split}        
+        \text{Lipschitzness}(\ell(\pmb{w},(\pmb{x}, y))) &= B \\
+        \text{Smoothness}(\ell(\pmb{w},(\pmb{x}, y))) &= \frac{B^2}{4} \\
+    \end{split}
+\end{equation*}
