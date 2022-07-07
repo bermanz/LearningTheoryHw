@@ -1,0 +1,38 @@
+By definition, over a vector space $A\in \mathbb{R}^m$:  
+$\mathcal{R}(A) = \frac{1}{m} \underset{\pmb{\sigma}}{\mathbb{E}} \underset{a\in A}{\sup} \sum_{i=1}^m \sigma_i a_i$
+
+\subsection*{a}
+Let $A' = \{a': a' = ca + a_0, \; a, a_0 \in A\}$, then:
+\begin{equation*}
+    \begin{split}        
+        \mathcal{R}(A') &= \frac{1}{m} \underset{\pmb{\sigma}}{\mathbb{E}} \underset{a'\in A'}{\sup} \sum_{i=1}^m \sigma_i a'_i 
+        = \frac{1}{m} \underset{\pmb{\sigma}}{\mathbb{E}} \underset{a\in A}{\sup} \sum_{i=1}^m \sigma_i (ca_i + a_0) \\
+        &= \frac{1}{m} \underset{\pmb{\sigma}}{\mathbb{E}} \left( \left(\underset{a\in A}{\sup} c \sum_{i=1}^m \sigma_i a_i\right) + a_0 \sum_{i=1}^m \sigma_i\right) \\
+        &= |c| \frac{1}{m} \underset{\pmb{\sigma}}{\mathbb{E}} \underset{a\in A}{\sup} \sum_{i=1}^m \sigma_i a_i + a_0 \frac{1}{m} \sum_{i=1}^m \underset{\pmb{\sigma}}{\mathbb{E}} \sigma_i \\
+        &= |c|\mathcal{R}(A) + 0 = |c|\mathcal{R}(A)
+    \end{split}
+\end{equation*}
+
+Where we used the following:
+\begin{enumerate}
+    \item The supremum over $a\in A$ is agnostic to additive constants ($\underset{a\in A}{\sup} (f(a) + a_0) = \underset{a\in A}{\sup} (f(a)) + a_0$).
+    \item The linearity of expectation.
+    \item The fact that $\mathbb{E}\sigma_i = 0 \; \forall i\in [m]$.
+\end{enumerate}
+
+\section*{b}
+Noting that
+\begin{equation*}    
+    \underset{\bar{f}_i \in conv \mathcal{F}}{\sup} \bar{f}_i = \underset{||\pmb{\alpha}||=1, \alpha_i \geq 0 \; \forall i, \; f\in \mathcal{F}}{\sup} \sum_{j=1}^n \alpha_j f_j = \underset{j\in [n]}{\sup} f_j
+\end{equation*}
+We get
+\begin{equation*}
+    \begin{split}        
+        \mathcal{R}(conv \mathcal{F}) &= \frac{1}{m} \underset{\pmb{\sigma}}{\mathbb{E}} \underset{\bar{f}_i \in conv \mathcal{F}}{\sup} \sum_{i=1}^m \sigma_i \bar{f}_i \\
+        &= \frac{1}{m} \underset{||\pmb{\alpha}||=1, \alpha_i \geq 0 \; \forall i, \; f\in \mathcal{F}}{\sup} \sum_{i=1}^m \sigma_i \sum_{j=1}^n \alpha_j f_j^{(i)} \\
+        &= \frac{1}{m} \underset{||\pmb{\alpha}||=1, \alpha_i \geq 0 \; \forall i, \; f\in \mathcal{F}}{\sup}  \sum_{j=1}^n \alpha_j f_j^{(i)} \sum_{i=1}^m \sigma_i \\
+        &= \frac{1}{m} \underset{j\in [n]}{\sup} f_j^{(i)} \sum_{i=1}^m \sigma_i \\
+        &= \frac{1}{m} \underset{f\in \mathcal{F}}{\sup} \sum_{i=1}^m \sigma_i f_i = \mathcal{R}(\mathcal{F})
+    \end{split}
+\end{equation*}
+Where we used the fact that the supremum over of all finite sets $\{f_i\} \subseteq \mathcal{F}$ is the same as the supremum of $\mathcal{F}$.

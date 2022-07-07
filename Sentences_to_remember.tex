@@ -1,0 +1,40 @@
+\documentclass{article} % Especially this!
+
+%% Preamble:
+\usepackage{Preamble}
+\usepackage{subcaption}
+\usepackage[labelformat=parens,labelsep=quad,skip=3pt]{caption}
+\usepackage{graphicx}
+
+
+\title{
+\normalfont \normalsize 
+\textsc{Introduction to Computational Learning Theory (05106-40401)} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Additional Exercises \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+\author{Omri Berman - 305113458}
+
+\date{\normalsize \today}
+\begin{document}
+
+\maketitle
+\noindent
+
+%%%%%%%%% BODY TEXT
+\subsubsection*{Hoeffding's inequality}
+Let $\{x_i\}_{i=1}^m$ a set of i.i.d random variables such that $0 \leq x_i \leq 1, \; \forall i \in [m]$ and let $X = \frac{1}{m} \sum_{i=1}^m x_i$ then:
+\begin{equation*}
+    P(|X - \mathbb{E}X| \geq t) \leq 2e^{-2mt^2}
+\end{equation*}
+
+\subsubsection*{Chernoff's Bound}
+Let $\{x_i\}_{i=1}^k$ a set of i.i.d random variables with $P(x_i=1)= P(x_i=-1) = \frac{1}{2}$, and let $X = \sum_{i=1}^k x_i$, then $\forall t>0 \in \mathbb{R}$:
+\begin{equation*}
+    P(X\geq t) \leq e^{-\frac{t^2}{2k}}
+\end{equation*}
+
+
+\end{document}
