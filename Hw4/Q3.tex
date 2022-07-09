@@ -64,9 +64,9 @@ This is infact the global minimum of the denominator since it's the only extremu
 \end{equation*}
 And so by the mean value theorem, $\frac{dh(a)}{da}$ is $\frac{1}{4}$ Lipschitz, concluding that $h(a)$ is $\frac{1}{4}$ smooth.
 
-Now, using two theories stating that if $f$ is a function with Lipschitzness $\rho$ / smooth $\beta$ and  $g$ is an affine function of $\pmb{x}$ ($g(<\pmb{w}, \pmb{x}> + b)$) , then the Lipschitzness / smoothness of $f(g(<\pmb{w}, \pmb{x}> + b))$ is $\rho ||x||_2$ / $\beta ||x||^2_2$ respectively, we get:
+Now, using two theories stating that if $f$ is a function with Lipschitzness $\rho$ / smooth $\beta$ composed over an affine function of $\pmb{x}$ ($f(\pmb{w}) = g(<\pmb{w}, \pmb{x}> + b)$) , then the Lipschitzness / smoothness of $f(<\pmb{w}, \pmb{x}> + b)$ is $\rho ||x||_2$ / $\beta ||x||^2_2$ respectively, we get:
 \begin{equation*}
-    \begin{split}        
+    \begin{split}
         \text{Lipschitzness}(\ell(\pmb{w},(\pmb{x}, y))) &= B \\
         \text{Smoothness}(\ell(\pmb{w},(\pmb{x}, y))) &= \frac{B^2}{4} \\
     \end{split}

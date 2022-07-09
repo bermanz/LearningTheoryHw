@@ -1,1 +1,64 @@
+\begin{proof}
+    The first inequality follows immediately from the convexity of $F$, that is:
+    \begin{equation*}
+        F(\bar{\pmb{w}}_T) = F(\sum_{t=1}^T \frac{1}{T} \pmb{w}_t) \leq \frac{1}{T} \sum_{t=1}^T F(\pmb{w}_t)
+    \end{equation*}
+    It's left to prove the 2nd inequality, that is
+    \begin{equation*}        
+        \frac{1}{T} \sum_{t=1}^T F(\pmb{w}_t) \leq \underset{\pmb{w}\in \mathcal{K}}{min} F(\pmb{w}) + \epsilon
+    \end{equation*}
+    Let $\pmb{w}^* = \underset{\pmb{w}\in \mathcal{K}}{argmin} F(\pmb{w})$, then:
+    \begin{equation*}
+        \frac{1}{T} \sum_{t=1}^T F(\pmb{w}_t) - F(\pmb{w}^*) \leq \frac{1}{T} \sum_{t=1}^T <\nabla F(\pmb{w}_t), \pmb{w}_t - \pmb{w}^*>
+    \end{equation*}
+    Where the inequality is again due to the convexity of $F$. In order to find an upper-bound over the inner product:
 
+    \begin{equation*}
+        \begin{split}            
+            ||\pmb{w_{t+1} - \pmb{w}^*}||^2 
+            &= ||\pi_{\mathcal{K}}(\pmb{w}_t - \eta_t \nabla F(\pmb{w}_t)) - \pmb{w}^*||^2
+            \leq ||\pmb{w}_t - \eta_t \nabla F(\pmb{w}_t) - \pmb{w}^*||^2 \\
+            &= ||(\pmb{w}_t - \pmb{w}^*) - \eta_t \nabla F(\pmb{w}_t)||^2 \\
+            &= ||\pmb{w}_t - \pmb{w}^*||^2 - 2\eta_t <\nabla F(\pmb{w}_t), \pmb{w}_t - \pmb{w}^*> + \eta_t^2 ||\nabla F(\pmb{w}_t)||^2
+        \end{split}
+    \end{equation*}
+    By rearranging the terms in the inequality, we get
+    \begin{equation*}
+        \begin{split}            
+            <\nabla F(\pmb{w}_t), \pmb{w}_t - \pmb{w}^*> &\leq \frac{1}{2} \left(\frac{||\pmb{w}_t - \pmb{w}^*||^2 - ||\pmb{w}_{t+1} - \pmb{w}^*||^2}{\eta_t} + \eta_t ||\nabla F(\pmb{w}_t)||^2\right) \\
+            \leq \frac{1}{2} \left(\frac{||\pmb{w}_t - \pmb{w}^*||^2 - ||\pmb{w}_{t+1} - \pmb{w}^*||^2}{\eta_t} + \eta_t G^2\right)
+        \end{split}
+    \end{equation*}
+    Plugging it back to the original inequality:
+    \begin{equation*}
+        \begin{split}            
+            \frac{1}{T} \sum_{t=1}^T F(\pmb{w}_t) - F(\pmb{w}^*) 
+            &\leq \frac{1}{T} \sum_{t=1}^T <\nabla F(\pmb{w}_t), \pmb{w}_t - \pmb{w}^*> \\
+            &\leq \frac{1}{2T} \sum_{t=1}^T \frac{||\pmb{w}_t - \pmb{w}^*||^2 - ||\pmb{w}_{t+1} - \pmb{w}^*||^2}{\eta_t} + \frac{1}{2T} \sum_{t=1}^T \eta_t G^2
+        \end{split}
+    \end{equation*}
+    First, we'll work on the first summand. By rolling back the indices of the $t+1$ dependent term, and by setting $\frac{1}{\eta_0} = 0$, we get:
+    \begin{equation*}
+        \begin{split}
+            &\frac{1}{2T} \sum_{t=1}^T \frac{||\pmb{w}_t - \pmb{w}^*||^2 - ||\pmb{w}_{t+1} - \pmb{w}^*||^2}{\eta_t} \\
+            &= \frac{1}{2T} \sum_{t=1}^T ||\pmb{w}_t - \pmb{w}^*||^2 \left(\frac{1}{\eta_t} - \frac{1}{\eta_{t-1}}\right) \\
+            &\leq \frac{D^2}{2T} \sum_{t=1}^T \left(\frac{1}{\eta_t} - \frac{1}{\eta_{t-1}}\right) \\
+            &= \frac{D^2}{2T} \frac{1}{\eta_T} = \frac{D^2}{2T\eta_T} = \frac{DG}{2\sqrt{T}} 
+        \end{split}
+    \end{equation*}
+    Moving to the next summand:
+    \begin{equation*}
+        \frac{1}{2T} \sum_{t=1}^T \eta_t G^2 = \frac{DG}{2T} \sum_{t=1}^T \frac{1}{\sqrt{t}} \leq \frac{DG}{2T} 2\sqrt{T} = \frac{DG}{\sqrt{T}}
+    \end{equation*}
+    Where the inequality holds since:
+    \begin{equation*}
+        \sum_{t=1}^T \frac{1}{\sqrt{t}} \leq \int_0^T \frac{1}{\sqrt{t}}dt = 2\sqrt{t}|^T_0 = 2\sqrt{T}
+    \end{equation*}
+    Combining everything, we get
+    \begin{equation*}
+        \begin{split}            
+            &\frac{1}{T} \sum_{t=1}^T F(\pmb{w}_t) - F(\pmb{w}^*) \leq \frac{DG}{2\sqrt{T}} + \frac{DG}{\sqrt{T}} = \frac{3}{2} \frac{DG}{\sqrt{T}} \overset{!}{\leq} \epsilon \\
+            &\Rightarrow T \geq \frac{9}{4} \left(\frac{DG}{\epsilon}\right)^2
+        \end{split}
+    \end{equation*}
+\end{proof}

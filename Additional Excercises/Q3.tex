@@ -1,0 +1,41 @@
+\begin{proof}
+    
+    We interpret the adaBoost algorithm as a variation of the multiplicative weight algorithm, where:
+    \begin{enumerate}
+        \item The samples S = $\{(x_i, y_i)\}_{i=1^m}$ are the experts
+        \item The incurred loss for any expert $\ell_t(i) = 1[h_t(x_i) = y_i]$ is actually the success of this expert's prediction.
+    \end{enumerate}
+    Thus, we can use the bounds developed for the MW algorithm and apply them directly for adaBoost:
+    \begin{equation*}
+        \sum_{t=1}^T <p_t, \ell_t> - \sum_{t=1}^T \ell_t(i^*) \leq 2\sqrt{T log(m)}
+    \end{equation*}
+    However, since we assume $h_t$ is a weak learner over $S$ w.r.t the distribution $p_t$, then:
+    \begin{equation*}
+        <p_t, \ell_t> = \sum_{i=1}^m p_t(i) [h_t(x_i) = y_i] = 1 - err(h_t) \geq \frac{1}{2} + \gamma
+    \end{equation*}
+    and hence:
+    \begin{equation*}
+        \sum_{t=1}^T <p_t, \ell_t> \geq T(\frac{1}{2} + \gamma)
+    \end{equation*}
+    And combined:
+    
+    \begin{equation*}
+        T(\frac{1}{2} + \gamma) \leq \sum_{t=1}^T <p_t, \ell_t> \leq \sum_{t=1}^T \ell_t(i^*) + 2\sqrt{T log(m)}
+    \end{equation*}
+    Now, assuming by contradiction that adaBoost has a finite empirical error ($\exists i\in [m] s.t. h^ada(x_i) \neq y_i$).
+    This event can occur only if $\exists i\in [m] s.t. \sum_{t=1}^T \ell_t(i) = \sum_{t=1}^T 1[h_t(x_i) = y_i]  < \frac{T}{2}$, in which case:
+    
+    \begin{equation*}
+        T(\frac{1}{2} + \gamma) \leq \sum_{t=1}^T \ell_t(i^*) + 2\sqrt{T log(m)} \leq \frac{T}{2} + 2\sqrt{T log(m)}
+    \end{equation*}
+    Where the last transition is true since $\ell_t(i^*) = \underset{i\in [m]}{min} \ell_t(i)$.
+    By rearranging the terms, we get
+    
+    \begin{equation*}
+        \gamma T \leq 2\sqrt{T log(m)} \Rightarrow T \leq 4\frac{log(m)}{\gamma^2}
+    \end{equation*}
+    That is, the non-zero empirical error assumption holds only if the number of iterations is smaller than $4\frac{log(m)}{\gamma^2}$. Thus, by running adaBoost for $T \geq \lceil 4\frac{log(m)}{\gamma^2} \rceil$, we are guaranteed to obtain
+    \begin{equation*}
+        err_S(h_s^ada) = 0
+    \end{equation*}
+\end{proof}

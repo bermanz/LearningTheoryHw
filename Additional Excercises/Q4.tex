@@ -1,0 +1,28 @@
+For convenience, I use the label '0' instead of '-1'.
+\subsection*{a}
+The strategy of the learner in this case is similar to that of finding a lion in the dessert, and is as follows:
+The learner initializes two variables, $L=1, R=N$. At each round $t$, the learner estimates the label as follows:
+
+\begin{equation*}    
+    \hat{y}_t==\begin{cases}
+        1 & a_t \leq \frac{L+R}{2} \\ 
+        0 & \text{else}
+             \end{cases}
+\end{equation*}
+
+If $\hat{y}_t = y_t$, the learner changes nothing. Otherwise:
+\begin{itemize}
+    \item If $a_t \leq \frac{L+R}{2}$, then set $R = a_t-1$.
+    \item If $a_t > \frac{L+R}{2}$, then set $L = a_t$.
+\end{itemize}
+By following this strategy,in each iteration, the learner narrows the interval to which $a*$ could eventually belong by at least a factor of 2. This means that after committing at most $\log_2N$, $L=R=a^*$, from which point the learner will make no further mistakes
+
+\subsection*{b}
+The adversary should follow the following strategy:
+\begin{enumerate}
+    \item Initializes two variables, $L=1, R=N$.
+    \item At each iteration Set $a_t = \frac{L+R}{2}$.
+    \item After the learner predicts $\hat{y}_t$, set $y_t = 1 - \hat{y}_t$.
+    \item If $\hat{y}_t = 1$, set $R = a_t$, else set $L = a_t$.
+\end{enumerate}
+This strategy guarantees that it will take exactly $log_2N$ steps until $L=R$, at which point the adversary can no longer guarantee that the learner will err on the next sample while keeping $a*$ consistent with all the previous samples. As following this strategy inherently incurs a mistaken prediction over the learner at each step, it guarantees that he makes at least $log_2N$ mistakes along the way.

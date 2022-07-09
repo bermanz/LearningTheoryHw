@@ -1,1 +1,48 @@
+Let $\Phi_t = \sum_{i=1}^n W_t(i)$, then since $\Phi_1 = \sum_{i=1}^n W_1(i) = \sum_{i=1}^n 1 = n$. 
+Moreover:
+\begin{equation*}
+        \Phi_{t+1} = \sum_{i=1}^n W_{t+1}(i) = \sum_{i=1}^n W_t(i) e^{-\epsilon \ell_t(i)}
+\end{equation*}
+Since $\forall x>0, e^{-\epsilon \ell_t(i)} \leq 1 - x + x^2$:
+\begin{equation*}
+    \begin{split}
+        \sum_{i=1}^n W_t(i) e^{-\epsilon \ell_t(i)} &\leq \sum_{i=1}^n W_t(i) (1 -\epsilon \ell_t(i) + \epsilon^2 \ell^2_t(i)) = \Phi_t \sum_{i=1}^n p_t (1 -\epsilon \ell_t(i) + \epsilon^2 \ell^2_t(i)) \\
+        &= \Phi_t(1 - \epsilon <p_t, \ell_t> + \epsilon^2 <p_t, \ell^2_t>)
+    \end{split}
+\end{equation*}
+Where the wnd last transition holds since $p_t(i) = \frac{W_t(i)}{\sum_{i=1}^n W_t(i)} = \frac{W_t(i)}{\Phi_t}$, and the last transition since $\sum_{t=1}^n p_t(i) = 1$ by the definition of a probability mass function.
 
+Now since $\forall x, 1 + x\leq e^x$ (in this case, $x = -\epsilon <p_t, \ell_t> + \epsilon^2 <p_t, \ell^2_t>$):
+\begin{equation*}
+    \Phi_t(1 - \epsilon <p_t, \ell_t> + \epsilon^2 <p_t, \ell^2_t>) 
+    \leq \Phi_t exp(-\epsilon <p_t, \ell_t> + \epsilon^2 <p_t, \ell^2_t>)
+\end{equation*}
+Thus, and by unfolding the recursive equation for $t=T+1$, we get:
+\begin{equation*}
+    \begin{split}        
+        \Phi_{T+1} &\leq \Phi_T exp(-\epsilon <p_T, \ell_T> + \epsilon^2 <p_T, \ell^2_T>) \\
+        &= \Phi_1 exp(-\epsilon \sum_{t=1}^T<p_t, \ell_t> + \epsilon^2 \sum_{t=1}^T <p_t, \ell^2_t>)\\
+        &= n exp(-\epsilon \sum_{t=1}^T<p_t, \ell_t> + \epsilon^2 \sum_{t=1}^T <p_t, \ell^2_t>)
+    \end{split}
+\end{equation*}
+Now, we know that $i^*\in [n]$ that is, the best expert is one of the n experts, thus:
+\begin{equation*}
+    W_{T+1}(i^*) = W_T e^{-\epsilon \ell_t(i^*)} = e^{-\epsilon \sum_{t=1}^T\ell_t(i^*)} \leq \sum_{i=1}^n e^{-\epsilon \sum_{t=1}^T\ell_t(i)}
+\end{equation*}
+Where the 2nd last transition follows from unfolding the recurssion, and the last transition since any summand is smaller or equal than the entire sum where all summends are non-negative (which is the case).
+Plugging all in, we get:
+\begin{equation*}
+    \begin{split}        
+        e^{-\epsilon \sum_{t=1}^T\ell_t(i^*)} 
+        &\leq \sum_{i=1}^n e^{-\epsilon \sum_{t=1}^T\ell_t(i)} = \sum_{i=1}^n W_{T+1}(i) = \Phi_{T+1} \\ 
+        &\leq n exp(-\epsilon \sum_{t=1}^T<p_t, \ell_t> + \epsilon^2 \sum_{t=1}^T <p_t, \ell^2_t>)
+    \end{split}
+\end{equation*}
+By taking the log of both sides:
+\begin{equation*}
+    -\epsilon \sum_{t=1}^T\ell_t(i^*) \leq log(n) -\epsilon \sum_{t=1}^T<p_t, \ell_t> + \epsilon^2 \sum_{t=1}^T <p_t, \ell^2_t>
+\end{equation*}
+And by rearranging the terms, we get the desired result:
+\begin{equation*}
+    \sum_{t=1}^T<p_t, \ell_t> - \sum_{t=1}^T\ell_t(i^*) \leq \frac{log(n)}{n} + \epsilon \sum_{t=1}^T <p_t, \ell^2_t>
+\end{equation*}
