@@ -10,7 +10,7 @@ Since $\forall x>0, e^{-\epsilon \ell_t(i)} \leq 1 - x + x^2$:
         &= \Phi_t(1 - \epsilon <p_t, \ell_t> + \epsilon^2 <p_t, \ell^2_t>)
     \end{split}
 \end{equation*}
-Where the wnd last transition holds since $p_t(i) = \frac{W_t(i)}{\sum_{i=1}^n W_t(i)} = \frac{W_t(i)}{\Phi_t}$, and the last transition since $\sum_{t=1}^n p_t(i) = 1$ by the definition of a probability mass function.
+Where the 2nd last transition holds since $p_t(i) = \frac{W_t(i)}{\sum_{i=1}^n W_t(i)} = \frac{W_t(i)}{\Phi_t}$, and the last transition since $\sum_{t=1}^n p_t(i) = 1$ by the definition of a probability mass function.
 
 Now since $\forall x, 1 + x\leq e^x$ (in this case, $x = -\epsilon <p_t, \ell_t> + \epsilon^2 <p_t, \ell^2_t>$):
 \begin{equation*}
@@ -44,5 +44,5 @@ By taking the log of both sides:
 \end{equation*}
 And by rearranging the terms, we get the desired result:
 \begin{equation*}
-    \sum_{t=1}^T<p_t, \ell_t> - \sum_{t=1}^T\ell_t(i^*) \leq \frac{log(n)}{n} + \epsilon \sum_{t=1}^T <p_t, \ell^2_t>
+    \sum_{t=1}^T<p_t, \ell_t> - \sum_{t=1}^T\ell_t(i^*) \leq \frac{log(n)}{\epsilon} + \epsilon \sum_{t=1}^T <p_t, \ell^2_t>
 \end{equation*}

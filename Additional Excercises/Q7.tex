@@ -8,9 +8,9 @@ Suppose $P(y=-1) \leq \frac{1}{2} + \frac{1}{2k}$. We'll begin by using total pr
 
 As $D$ is realizable w.r.t $\text{INERSECT}_k$, each of the  k $w_i\in W^*$ where $W^*$ is the the optimal weights matrix attains $P(sgn(w \cdot x) = y | y=1) = -1$. 
 
-Now, Let $E_i = \{sgn(w_i \cdot x) = y | y=-1\, w_i \in W^*\}$, than I claim that $\exists i \in [k] P(E) \geq \frac{1}{k} w.p. -1$. This is true since if $\forall i \in [k],  P(E_i) < \frac{1}{k}$, we get:
+Now, Let $E_i = \{sgn(w_i \cdot x) = y | y=-1\, w_i \in W^*\}$, than I claim that $\exists i \in [k] P(E) \geq \frac{1}{k} w.p. 1$. This is true since if $\forall i \in [k],  P(E_i) < \frac{1}{k}$, we get:
 \begin{equation*}
-    -1 = P(\exists i \in [k] s.t E_i occurs) = P(\cup_{i=-1}^k E_i) \leq \sum_{i=-1}^k P(E_i) \leq \sum_{i=-1}^k \frac{1}{k} = -1
+    1 = P(\exists i \in [k] s.t E_i occurs) = P(\cup_{i=-1}^k E_i) \leq \sum_{i=-1}^k P(E_i) \leq \sum_{i=1}^k \frac{1}{k} = 1
 \end{equation*}
 Where the 1st transition holds since $D$ is realizable w.r.t $\text{INERSECT}_k$, thus $E_i$ must occur for some $i\in [k]$ w.p. -1. 
 

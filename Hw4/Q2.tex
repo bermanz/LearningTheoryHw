@@ -71,11 +71,7 @@
 
 \subsection*{g}
 \begin{proof}
-    True. Assuming by contradiction that $A_\alpha$ is convex $\forall \alpha$ but $f$ isn't convex, there must exist a pair $x,y$ and a scalar $\lambda \in [0, 1]$ such that:
-    \begin{equation*}
-        f((1-\lambda)x + \lambda y) > (1-\lambda)f(x) + \lambda f(y)
-    \end{equation*}
-    However, since we assume that $A_\alpha$ is convex $\forall \alpha$, it's also convex for some $\alpha_0 > max\left(f(x), f(y), f((1-\lambda)x + \lambda y) \right) $, but then the points $x, y, (1-\lambda)x + \lambda y$ all belong to $A_{\alpha_0}$, so the proposed inequality can't hold, so $f$ must be a convex function.
+    False. Let $f(x) = arctan(x)$. Since $f(x)$ is monotonically increasing, the set $A_\alpha$ is always a half closed interval on the real axis $\forall \alpha < \frac{\pi}{2}$, and is the entire real axis for $\alpha \geq \frac{\pi}{2}$, which in all cases is a convex set. Hence, it satisfies the conditions of the question. However, this is clearly not a convex function, since it's strictly concave $\forall x > 0$.
 \end{proof}
 
 \subsection*{h}
