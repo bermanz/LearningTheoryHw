@@ -5,12 +5,17 @@ In addition, forall negative intervals $I^-_i$ greater than $\frac{\epsilon}{4k}
 $E^-_i = \{\exists x^- \sim D S.T x_- \in I^-_i\}$.
 Assuming the event $E = E^+_i \cap E^-_i$ occurs, the obtained error is:
 \begin{equation*}
-    P(err(h_S) | E) \leq \sum_{i=1}^{k+1} D(I^-_i < \frac{\epsilon}{4k}) + \sum_{i=1}^k D([l_i, l_i + \frac{\epsilon}{4k}]) + D([u_i - \frac{\epsilon}{4k}, u_i]) = (k+1) \frac{\epsilon}{4k} + 2k\frac{\epsilon}{4k} \leq 2k\frac{\epsilon}{4k} + 2k\frac{\epsilon}{4k} = 4k\frac{\epsilon}{4k} = \epsilon
+    \begin{split}        
+        P(err(h_S) | E) &\leq \sum_{i=1}^{k+1} D(I^-_i < \frac{\epsilon}{4k}) + \sum_{i=1}^k D([l_i, l_i + \frac{\epsilon}{4k}]) + D([u_i - \frac{\epsilon}{4k}, u_i]) \\
+        &= (k+1) \frac{\epsilon}{4k} + 2k\frac{\epsilon}{4k} \leq 2k\frac{\epsilon}{4k} + 2k\frac{\epsilon}{4k} = 4k\frac{\epsilon}{4k} = \epsilon
+    \end{split}
 \end{equation*}
 As requested. To find the sample complexity, let's upperbound the probability of failure:
 \begin{equation*}
     \begin{split}
-        P(err(h_S) > \epsilon) &= P(err(h_S) | \bar{E}) \leq P(\cup_{i=1}^{k+1} \bar{E}^-_i, \bar{E}^+_i) \sum_{i=1}^{k+1}\leq P(\bar{E}^-_i + \bar{E}^+_i) \leq (k+1)(1-\frac{\epsilon}{4k})^m  + k(1-\frac{\epsilon}{4k})^m \leq 4k(1-\frac{\epsilon}{4k})^m \leq 4ke^{-m\frac{epsilon}{4k}} \overset{!}{<} \delta \\ 
+        P(err(h_S) > \epsilon) &= P(err(h_S) | \bar{E}) \\
+        &\leq P(\cup_{i=1}^{k+1} \bar{E}^-_i, \bar{E}^+_i) \sum_{i=1}^{k+1}\leq P(\bar{E}^-_i + \bar{E}^+_i) \leq (k+1)(1-\frac{\epsilon}{4k})^m  + k(1-\frac{\epsilon}{4k})^m \\
+        &\leq 4k(1-\frac{\epsilon}{4k})^m \leq 4ke^{-m\frac{epsilon}{4k}} \overset{!}{<} \delta \\ 
         m(\epsilon, \delta) &> \frac{4k}{\epsilon} ln(\frac{4k}{\delta})
     \end{split}
 \end{equation*}

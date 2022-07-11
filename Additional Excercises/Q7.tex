@@ -26,4 +26,5 @@ Plugging it all back in:
 \end{equation*}
 
 \subsection*{b}
+By section (a), we conclude that in any case, the oracle $\mathcal{O}$ returns a $\frac{1}{2k^2}$-weak learner for $INTERSECT_k$ (either by returning $h_t(x_i) = -1$ in the event $P(y=-1) > \frac{1}{2} + \frac{1}{2k}$ or by finding the halfspace that satisfies condition 2). Using AdaBoost and a sufficiently large number of iterations T, we can obtain a strong learning algorithm for $INTERSECT_k$ with sample complexity $m(\epsilon, \delta) = O(\frac{Tdlog(Td) + \frac{1}{\delta}}{\epsilon}) = $
 

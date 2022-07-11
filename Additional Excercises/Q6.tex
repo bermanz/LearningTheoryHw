@@ -1,0 +1,66 @@
+\subsection*{a}
+We recall that by Sauer's lemma, for a hypotheses class $\mathcal{H}$ with VC dimension $d$:
+\begin{equation*}
+    \tau_{\mathcal{H}}(m) \leq \Theta(m^d)
+\end{equation*}
+In our case, we have $\mathcal{H}_\mathit{adaboost} = MAJ\{h_1, \dotsc , h_T\}$ where $h_i \in \mathcal{H}, \; \forall i \in [T]$. Hence, the number of different hypotheses over m samples for $\mathcal{H}_\mathit{adaboost}$ is dictated by the number of permutations of choosing $T$ hypotheses from the $O(m^d)$ hypotheses of class $\mathcal{H}$, that is:
+\begin{equation*}
+    \tau_{\mathcal{H}_\mathit{adaboost}}(m) \leq O(\binom{m^d}{T}) \leq O((m^d) ^ T) = O(m^{dT})
+\end{equation*}
+Following Lemma 3.8 taught in class, we deduce that:
+\begin{equation*}
+    VCdim(\mathcal{H}) \leq O(dT log(dT))
+\end{equation*}
+
+\subsection*{b}
+In section (a), we proved that $\mathcal{H}_\mathit{adaboost}$ has a finite VC dimension. It follows from the fundamental theorem of learning theory that $\mathcal{H}_\mathit{adaboost}$ is PAC learnable by any ERM rule.
+To obtain an ERM rule, we need that all T weak-learners are successful, that is $err(h_t) \leq \frac{1}{2} - \gamma ;\, \forall t\in [T]$. This means that a single unsuccessful weak-learner is sufficient for the failure of the entire AdaBoost ERM finding.
+
+Let $E_i = \{err(h_i) > \frac{1}{2} + \gamma\}$, then:
+\begin{equation*}
+    P(\{\text{failure}\}) = P(\cup_{i=1}^T E_i) \leq \sum_{i=1}^T P(E_i) \leq \sum_{i=1}^T \delta_0 = T\delta_0
+\end{equation*}
+Thus:
+\begin{equation*}
+    P(\{\text{success}\}) = 1 - P(\{\text{failure}\}) \geq 1 - T\delta_0
+\end{equation*}
+Since we want a successful learner w.p. $1-\delta$:
+\begin{equation*}
+    \begin{split}        
+        P(\{\text{success}\}) &= 1 - P(\{\text{failure}\}) \geq 1 - T\delta_0 \geq 1-\delta \\
+        \delta_0 &\leq \frac{\delta}{T}
+    \end{split}
+\end{equation*}
+And the sample complexity required for the weak learners to succeed is thus
+\begin{equation*}
+    m_\omega (\delta) = 5log(\frac{T}{\delta})
+\end{equation*}
+Recalling from exercise 3 that to obtain an ERM hypotheses $T$ must be greater than $4\frac{log(m)}{\gamma^2}$, we get:
+\begin{equation*}
+    m_\omega (\delta) = O(log(\frac{\frac{log(m)}{\gamma^2}}{\delta}))
+\end{equation*}
+And by using the fact that $m \geq dlogm \Rightarrow m > d log d$:
+\begin{equation*}
+    m_\omega (\delta) = O(log(\frac{\frac{log(\frac{1}{\delta \gamma^2})}{\gamma^2}}{\delta}))
+\end{equation*}
+
+Assuming realizability, the obtained ERM algorithm will achieve an approximation error
+\begin{equation*}
+    err(h^S_\mathit{adaboost}) < \epsilon
+\end{equation*}
+w.p. at least $1-\delta$ after seeing
+\begin{equation*}    
+    m\geq O(\frac{VC(\mathcal{H}_\mathit{adaboost}) + \frac{1}{\delta}}{\epsilon}) = O(\frac{dT log(dT) + \frac{1}{\delta}}{\epsilon})
+\end{equation*}
+examples. 
+\begin{equation*}
+    m\geq O(\frac{d\frac{log(m)}{\gamma^2} log(d\frac{log(m)}{\gamma^2}) + \frac{1}{\delta}}{\epsilon})
+\end{equation*}
+\begin{equation*}
+    m\geq O(\frac{d\frac{log(d)}{\gamma^2} log(d\frac{log(d)}{\gamma^2}) + \frac{1}{\delta}}{\epsilon})
+\end{equation*}
+Finally, out sample complexity must guarantee both the learnability of the eventual hypothesis as well as the successfulness of the weak learners, that is:
+
+\begin{equation*}
+    m\geq O\left(max(\frac{d\frac{log(d)}{\gamma^2} log(d\frac{log(d)}{\gamma^2}) + \frac{1}{\delta}}{\epsilon}, log(\frac{log(\frac{1}{\delta \gamma^2})}{\delta \gamma^2}))\right)
+\end{equation*}
