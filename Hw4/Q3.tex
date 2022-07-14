@@ -1,4 +1,4 @@
-\subsection*{a}
+\subsubsection{}
 \begin{proof}    
     Let $h(\pmb{w}) = \frac{1}{m}\sum_{i=1}^m \ell\left(\pmb{w}, (x_i, y_i)\right)$. Since $\ell\left(\pmb{w}, (x, y)\right)$ is convex, so is $h(\pmb{w})$ (as an affine combination of convex functions), and hence:
     \begin{equation*}
@@ -32,23 +32,23 @@
     Hence $F_\lambda(\pmb{w})$ is $\lambda$ strongly convex
 \end{proof}
 
-\subsection*{b}
+\subsubsection{}
 Let $h(a) = log(1 + e^a)$. We'll first show that $h(a)$ is Lipschitz bounded, convex and find it's smoothness:
 
-\subsubsection*{Lipshitzness}
+\paragraph{Lipshitzness}
 \begin{equation*}
     \frac{dh(a)}{da} = \frac{e^a}{1+e^a}  = \frac{1}{1+e^{-a}} \Rightarrow |\frac{dh(a)}{da}| \leq 1
 \end{equation*}
 Since $e^{-a} \geq 0, \; \forall a\in \mathbb{R}$, so $h(a)$ is 1-Lipschitz
 
-\subsubsection*{Convexity}
+\paragraph{Convexity}
 \begin{equation*}
     \frac{d^2h(a)}{da^2} = \frac{d^2}{da^2} \left(\frac{1}{1+e^{-a}}\right) = -\frac{-e^{-a}}{(1+e^{-a})^2} = 
     \frac{1}{e^{-a}(1+e^{-a})^2}
 \end{equation*}
 And as the denominator is positive $\forall a\in \mathbb{R}$, we have $|\frac{d^2h(a)}{da^2}| > 0, \; \forall a\in \mathbb{R}$, meaning that $h(a)$ is convex wherever it's defined.
 
-\subsubsection*{smoothness}
+\paragraph{smoothness}
 First, we find the minimum of the 2nd derivative's denominator:
 \begin{equation*}
     \begin{split}

@@ -1,4 +1,4 @@
-\subsection*{a}
+\subsubsection{}
 \begin{proof}    
     True. let $f_1, f_2, f_3$ be the maximizers of set $\mathcal{F}$ at the arbitrary points $x, y and z=(1-\lambda)x + \lambda y$ respectively. Then:
     \begin{equation*}
@@ -7,7 +7,7 @@
     Where the 1st inequality follows since $f_3$ is a convex function and the 2nd inequality since $f_1, f_2$ are the maximizers of $\mathcal{F}$ at x,y respectively.
 \end{proof}
 
-\subsection*{b}
+\subsubsection{}
 \begin{proof}    
     True. let $h = f + g$, then:
     \begin{equation*}
@@ -20,7 +20,7 @@
     \end{equation*}
 \end{proof}
 
-\subsection*{c}
+\subsubsection{}
 \begin{proof}    
     True. Let $h = \alpha \cdot f$. Since $f$ is convex, by definition:
     \begin{equation*}
@@ -32,7 +32,7 @@
     \end{equation*}    
 \end{proof}
 
-\subsection*{d}
+\subsubsection{}
 \begin{proof}    
     False. Let $f(z) = z^2, \; g(z) = z^2-1$ and let $h = f \circ g$. Now let $x=1, y=-1, \lambda=\frac{1}{2}$, then:
     \begin{equation*}
@@ -44,7 +44,7 @@
     So we have $h((1-\lambda)x + \lambda y) > (1-\lambda)h(x) + \lambda h(y)$ meaning $h = f \circ g$ isn't convex.
 \end{proof}
 
-\subsection*{e}
+\subsubsection{}
 \begin{proof}
     False. Let $f(z) = z^2, \; g(z) = z^2-1$ and let $h = f \circ g$. Now let $x=1, y=-1, \lambda=\frac{1}{2}$, then:
     \begin{equation*}
@@ -56,7 +56,7 @@
     So we have $h((1-\lambda)x + \lambda y) > (1-\lambda)h(x) + \lambda h(y)$ meaning $h = f \circ g$ isn't convex.
 \end{proof}
 
-\subsection*{f}
+\subsubsection{}
 \begin{proof}
     True. We saw in class that if $f$ is differentiable and convex, the bound:
     \begin{equation*}
@@ -69,17 +69,20 @@
     meaning that $f(x) = \underset{x'}{min} f(x'), \; \forall x'$.
 \end{proof}
 
-\subsection*{g}
+\subsubsection{}
 \begin{proof}
     False. Let $f(x) = arctan(x)$. Since $f(x)$ is monotonically increasing, the set $A_\alpha$ is always a half closed interval on the real axis $\forall \alpha < \frac{\pi}{2}$, and is the entire real axis for $\alpha \geq \frac{\pi}{2}$, which in all cases is a convex set. Hence, it satisfies the conditions of the question. However, this is clearly not a convex function, since it's strictly concave $\forall x > 0$.
 \end{proof}
 
-\subsection*{h}
+\subsubsection{}
 \begin{proof}
     True. let $h_1,h_2 \in K + G$ then $\exists u_1,u_2 \in K, \; v_1,v_2 \in G$ s.t $h_1=u_1+v_1, \; h_2=u_2+v_2$. Now:
     \begin{equation*}
-        \lambda h_1 + (1-\lambda) h_2 = \lambda (u_1 + v_1) + (1-\lambda) (u_2 + v_2) = 
-        \left(\lambda u_1 + (1-\lambda) u_2 \right) +  \left(\lambda v_1 + (1-\lambda) v_2 \right) \triangleq \tilde{u} + \tilde{v} \in K+G
+        \begin{split}            
+            \lambda h_1 + (1-\lambda) h_2 &= \lambda (u_1 + v_1) + (1-\lambda) (u_2 + v_2) = 
+            \left(\lambda u_1 + (1-\lambda) u_2 \right) +  \left(\lambda v_1 + (1-\lambda) v_2 \right) \\
+            &= \tilde{u} + \tilde{v} \in K+G
+        \end{split}
     \end{equation*} 
     Where the last transition is since $\tilde{u} \in K$ and $\tilde{v} \in K$ because both are convex combinations of members of the convex sets.
 \end{proof}

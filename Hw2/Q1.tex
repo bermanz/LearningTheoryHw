@@ -1,4 +1,4 @@
-\subsection*{a}
+\subsubsection{}
 \begin{proof}
     In order for a set $A$ to be shattered by a hypotheses class $\mathcal{H}$, the number of different hypotheses in the class must be at least $2^{|A|}$, 
     since each element in $a \in A$ can be classified as either 1 or 0 by any hypothesis $h \in \mathcal{H}$. Put in math:
@@ -12,7 +12,7 @@
     Where the last transition is due to the log function being monotonically increasing wherever it's defined.
 \end{proof}
 
-\subsection*{b}
+\subsubsection{}
 \begin{proof}
     First, we will prove that $VC(\mathcal{H}_{mon})$ is at least $n$, by finding a set $A$ of size $n$ which is shuttered by $VC(\mathcal{H}_{mon})$.
     
@@ -54,7 +54,7 @@
     To conclude, we saw that $\mathcal{H}_{mon}$ shatters a group of size n (meaning $VC(\mathcal{H}_{mon}) \geq n$) and that $VC(\mathcal{H}_{mon}) \leq n\log(3)$, hence $VC(\mathcal{H}_{mon}) = O(n)$.
 \end{proof}
 
-\subsection*{c}
+\subsubsection{}
 First, let's analyze the number of different possible clauses. Given that the clause $C_i$ has $k$ different literals, chosen from a collection of $n$ possible literals, there are $n \choose k$ literal configurations. In each of those, a literal $l_j$ can either take the form of $x_t$ or $1-x_t$, thus the total number of different clauses is:
 \begin{equation*}
     {2n \choose k}

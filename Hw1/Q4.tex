@@ -3,7 +3,8 @@ $E = \{\exists x_i \in S^m S.T h_1*(x_i) \neq h_2(x_i)\}$. Given the occurrence 
 
 \begin{equation*}
     \begin{split}
-        P(\bar{E}) &= P(\{\forall x_i \in S^m S.T h_1*(x_i) = h_2(x_i)\}) = P(\cup_{i=1}^m h^*(x_i) = f(x_i)) = \prod_{i=1}^m P(h^*(x_i) = f(x_i)) \leq \prod_{i=1}^m (1-\epsilon) = (1-\epsilon)^m \leq e^{-\epsilon m} \overset{!}{<} \delta \\
+        P(\bar{E}) &= P(\{\forall x_i \in S^m S.T h_1*(x_i) = h_2(x_i)\}) = P(\cup_{i=1}^m h^*(x_i) = f(x_i)) \\
+        &= \prod_{i=1}^m P(h^*(x_i) = f(x_i)) \leq \prod_{i=1}^m (1-\epsilon) = (1-\epsilon)^m \leq e^{-\epsilon m} \overset{!}{<} \delta \\
         m &> \frac{1}{\epsilon} ln(\frac{1}{\delta})
     \end{split}
 \end{equation*}

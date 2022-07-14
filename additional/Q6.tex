@@ -1,4 +1,4 @@
-\subsection*{a}
+\subsubsection{}
 We recall that by Sauer's lemma, for a hypotheses class $\mathcal{H}$ with VC dimension $d$:
 \begin{equation*}
     \tau_{\mathcal{H}}(m) \leq \Theta(m^d)
@@ -12,7 +12,7 @@ Following Lemma 3.8 taught in class, we deduce that:
     VCdim(\mathcal{H}) \leq O(dT log(dT))
 \end{equation*}
 
-\subsection*{b}
+\subsubsection{}
 In section (a), we proved that $\mathcal{H}_\mathit{adaboost}$ has a finite VC dimension. It follows from the fundamental theorem of learning theory that $\mathcal{H}_\mathit{adaboost}$ is PAC learnable by any ERM rule.
 To obtain an ERM rule, we need that all T weak-learners are successful, that is $err(h_t) \leq \frac{1}{2} - \gamma ;\, \forall t\in [T]$. This means that a single unsuccessful weak-learner is sufficient for the failure of the entire AdaBoost ERM finding.
 

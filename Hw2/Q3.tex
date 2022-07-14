@@ -1,4 +1,4 @@
-\subsection*{1}
+\subsubsection{}
 Since the VC dimension of $\mathcal{H}$ is infinite, any finite set of points $C \subseteq \mathcal{X} $ of size d is shuttered by $\mathcal{H}$. Let $H \subset \mathcal{H}$ be the subset of hypotheses that shutter C, and pick $h^* \sim Unif(H)$. Now, we define a distribution $D_C: x_i \sim Unif(C)$, and sample a set $S$ of m points from it. For any algorithm A trained over the set $S$ and returns the hypothesis $h_S^A$, we defined the generalization error:
 \begin{equation*}
     \mathit{err}(h_S^A) = P_{D_C}(h_S^A(x) \neq h^*(x)) = \underset{h^*, S, x}{\mathbb{E}} \ell_{0,1}(h_S^A(x),h^*(x))
@@ -41,7 +41,7 @@ However, since the hypothesis class $\mathcal{H}$ is PAC learnable, there exists
 This contradicts the assumption that the VC dimension of a PAC learnable class can be infinite.
 
 
-\subsection*{2}
+\subsubsection{}
 By definition, a class $\mathcal{H}$ has the uniform convergence property if $\forall h \in \mathcal{H}$ and $\forall \epsilon, \delta \in (0, 1)$ there exists a sample of size $m \geq m(\frac{\epsilon}{2}, \frac{\delta}{2})$ such that for any D over $\mathcal{X}$ we have:
 
 \begin{equation*}

@@ -1,5 +1,5 @@
 For convenience, I use the label '0' instead of '-1'.
-\subsection*{a}
+\subsubsection{}
 The strategy of the learner in this case is similar to that of finding a lion in the dessert, and is as follows:
 The learner initializes two variables, $L=1, R=N$. At each round $t$, the learner estimates the label as follows:
 
@@ -17,7 +17,7 @@ If $\hat{y}_t = y_t$, the learner changes nothing. Otherwise:
 \end{itemize}
 By following this strategy,in each iteration, the learner narrows the interval to which $a*$ could eventually belong by at least a factor of 2. This means that after committing at most $\log_2N$, $L=R=a^*$, from which point the learner will make no further mistakes
 
-\subsection*{b}
+\subsubsection{}
 The adversary should follow the following strategy:
 \begin{enumerate}
     \item Initializes two variables, $L=1, R=N$.

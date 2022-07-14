@@ -1,5 +1,5 @@
-\subsection*{a}
-\subsubsection*{1}
+\subsubsection{}
+\paragraph{1}
 \begin{proof}    
     If we plug in $\boldsymbol{w}=\boldsymbol{0}$, we get:
     \begin{equation*}
@@ -10,7 +10,7 @@
     Now let $\boldsymbol{w}_{\lambda, S} = \underset{\boldsymbol{w}}{argmin} \mathcal{L}_{\lambda, S}(\boldsymbol{w})$, so by construction, $\mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S}) \leq \mathcal{L}_{\lambda, S}(\boldsymbol{0}) = 1$, proving the desired inequality
 \end{proof}
 
-\subsubsection*{2}
+\paragraph{2}
 \begin{proof}
     Following subsection (1), we have:
     \begin{equation*}
@@ -23,7 +23,7 @@
     Where the last transition is since $max\{0, 1-y \boldsymbol{w}_{\lambda, S} \cdot \boldsymbol{x}\} \geq 0 \; \forall y, \boldsymbol{w}_{\lambda, S}, \boldsymbol{x}$. The desired result is obtained by multiplying both sides by $\frac{2}{\lambda}$ (which doesn't alter the inequality's direction since $\lambda > 0$) and taking the square root (which also doesn't change the inequality's direction since it's a monotonically increasing function).
 \end{proof}
 
-\subsection*{b}
+\subsubsection{}
 \begin{proof}
     There are 2 possibilities:
     \begin{enumerate}
@@ -52,7 +52,7 @@
     As required.
 \end{proof}
 
-\subsection*{c}
+\subsubsection{}
 \begin{proof}
     First, we claim that $\forall \boldsymbol{w} \in \mathbb{R}^d$, $\mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S}) \leq \mathcal{L}_{\lambda, S}(\boldsymbol{w})$ by the definition of $\boldsymbol{w}_{\lambda, S}$. Hence, it's also true for $\boldsymbol{w}^* = \underset{||\boldsymbol{w}||\leq 1}{argmin} \mathcal{L}_{\lambda, S}(\boldsymbol{w}_{\lambda, S})$. we thus conclude that:
 
@@ -92,7 +92,8 @@
         \begin{split}      
             \mathcal{L}(\boldsymbol{w}_{\lambda, S}) - \left(\frac{\lambda}{2} + \underset{||\boldsymbol{w}||\leq 1}{min} \sum_{i=1}^m \ell_{\text{hinge}}(\boldsymbol{w}; \boldsymbol{x}, y)\right)
             &\leq \mathcal{L}_D(\boldsymbol{w}_{\lambda, S}) - \mathcal{L}_S(\boldsymbol{w}_{\lambda, S}) \\
-            &\leq \underset{||\boldsymbol{w}|| \leq B}{sup} \mathcal{L}_D(\boldsymbol{w}) - \mathcal{L}_S(\boldsymbol{w}) \leq 2 \sqrt{\frac{2}{\lambda m}} + O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right)
+            &\leq \underset{||\boldsymbol{w}|| \leq B}{sup} \mathcal{L}_D(\boldsymbol{w}) - \mathcal{L}_S(\boldsymbol{w}) \\
+            &\leq 2 \sqrt{\frac{2}{\lambda m}} + O\left(\sqrt{\frac{ln 1/\delta}{\lambda m}} \right)
         \end{split}
     \end{equation*}
 
@@ -107,7 +108,7 @@
     Where the last transition holds since typically $\delta << 1$.
 \end{proof}
 
-\subsection*{d}
+\subsubsection{}
 If a such a $||\boldsymbol{w*}||$ exists, then $\forall x_i, y_i \in D, \; \ell_{\text{hinge}}(\boldsymbol{w};(\boldsymbol{x}_i, y_i)) = 0 $. As this is the minimum of the empirical loss, the result from subsection c collapses to:
 
 \begin{equation*}

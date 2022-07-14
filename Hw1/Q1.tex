@@ -14,7 +14,10 @@ For auxiliary, we calculate the probability of the complement event, that is:
 $\bar{E} = \{\forall i \in [m] S.T x_i \notin [l, \tilde{l}] \cup x_i \notin [\tilde{u}, u]\}$.
 Should $\bar{E}$ occur, we can't guarantee a success of our hypothesis. Let's calculate the probability of the event's occurrence:
 \begin{equation*}
-    P(\bar{E}) \overset{\text{Union Bound}}{\leq} P(x_i \notin [l, \tilde{l}] \forall i \in [m]) + P(x_i [\tilde{u}, u] \forall i \in [m]) = 2 P(x_i \notin [l, \tilde{l}] \forall i \in [m]) = 2(1- \frac{\epsilon}{2})^2 \leq 2e^{-\frac{\epsilon}{2}m}
+    \begin{split}        
+        P(\bar{E}) &\overset{\text{UB}}{\leq} P(x_i \notin [l, \tilde{l}] \forall i \in [m]) + P(x_i [\tilde{u}, u] \forall i \in [m]) \\
+        &= 2 P(x_i \notin [l, \tilde{l}] \forall i \in [m]) = 2(1- \frac{\epsilon}{2})^2 \leq 2e^{-\frac{\epsilon}{2}m}
+    \end{split}
 \end{equation*}
 Now, instead of lower bounding the probability for success, let's upper-bound the probability for failure:
 \begin{equation*}

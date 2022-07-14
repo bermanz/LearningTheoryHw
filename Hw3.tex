@@ -1,63 +1,34 @@
-\documentclass{article} % Especially this!
-
-%% Preamble:
-\usepackage{../Preamble}
-\usepackage{subcaption}
-\usepackage[labelformat=parens,labelsep=quad,skip=3pt]{caption}
-\usepackage{graphicx}
-\usepackage{csvsimple}
-
-
-\title{
-\normalfont \normalsize 
-\textsc{Introduction to Computational Learning Theory (05106-40401)} \\
-[10pt] 
-\rule{\linewidth}{0.5pt} \\[6pt] 
-\huge Homework \#3 \\
-\rule{\linewidth}{2pt}  \\[10pt]
-}
-\author{Omri Berman - 305113458}
-
-\date{\normalsize \today}
-\begin{document}
-
-\maketitle
-\noindent
-
-%%%%%%%%% BODY TEXT
-\section*{Ex1}
+\subsection{}
 
 \begin{figure}[H]
-    \centering\includegraphics[width=\linewidth]{train_set.png}
+    \centering\includegraphics[width=\linewidth]{Hw3/train_set.png}
 \end{figure}
 
 To find a proper hyper-parameter (either q for polynomial kernel or $\sigma$ for rbf) for an ERM, I repeatedly trained the perceptron algorithm over a pre-defined grid of hyper-parameter values until convergence, or until the number of iterations exceeded 99 (in which case the algorithm was assumed not to converge). Below are the number of iterations it took for all the successful hyper-parameter values to converge:
 
 \begin{figure}[H]
-    \centering\includegraphics[width=\linewidth]{T_vs_param.png}
+    \centering\includegraphics[width=\linewidth]{Hw3/T_vs_param.png}
 \end{figure}
 
 From the set of successful hyper-parameters, I randomly chose a single value, with which to evaluate the performance over both train and test-sets. Erroneous classifications appear in green.
 Not surprisingly, as both hyper-parameters were chosen from subsets of successful hyper-parameters (that is, for which the perceptron is ERM), we have no classification errors over the training set.
 
 \begin{figure}[H]
-    \centering\includegraphics[width=\linewidth]{class_est.png}
+    \centering\includegraphics[width=\linewidth]{Hw3/class_est.png}
 \end{figure}
 
 \begin{figure}
-    \centering\csvautotabular{Class_err.csv}
+    \centering\csvautotabular{Hw3/Class_err.csv}
     \caption{Classification Errors Summary}
 \end{figure}
 \begin{center}
 \end{center}
 
-\section*{Ex2}
+\subsection{}
 \begin{figure}[H]
-    \includegraphics[width=\linewidth]{MNist_random.png}
+    \includegraphics[width=\linewidth]{Hw3/MNist_random.png}
 \end{figure}
 
 \begin{figure}[H]
-    \includegraphics[width=\linewidth]{AdaBoost.png}
+    \includegraphics[width=\linewidth]{Hw3/AdaBoost.png}
 \end{figure}
-
-\end{document}
